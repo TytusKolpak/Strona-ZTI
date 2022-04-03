@@ -16,8 +16,8 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/html/rejestracja.html")
 })
 
-app.get("/public/html/index.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/index.html")
+app.get("/index.html", (req, res) => {
+    res.sendFile(__dirname + "/index.html")
 })
 
 app.post("/", (req, res) => {
