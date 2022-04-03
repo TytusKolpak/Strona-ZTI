@@ -77,3 +77,6 @@ app.listen(process.env.PORT || portNumber, () => {
 //API key for mail monkey
 //39ea43e005ddc02bc7ff0bbef797a66a-us14
 //unique audience c57d0e69d2
+//1. git add.
+//2. git commit -m "któryś commit"
+//3, git push heroku master
