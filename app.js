@@ -14,13 +14,21 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 //tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/html/rejestracja.html")
+    res.sendFile(__dirname + "/public/html/index.html")
 })
 
 //to obsługuje pozostałe
-var odnośnik = ""
-app.get("/"+odnośnik+".html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/"+odnośnik+".html")
+app.get("/index.html", (req, res) => {
+    res.sendFile(__dirname + "/public/html/index.html")
+})
+app.get("/kontakt.html", (req, res) => {
+    res.sendFile(__dirname + "/public/html//kontakt.html")
+})
+app.get("/logowanie.html", (req, res) => {
+    res.sendFile(__dirname + "/public/html/logowanie.html")
+})
+app.get("/rejestracja.html", (req, res) => {
+    res.sendFile(__dirname + "/public/html/rejestracja.html")
 })
 
 app.post("/", (req, res) => {
