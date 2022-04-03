@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/index.html", (req, res) => {
-    res.sendFile(__dirname + "/index.html")
+    res.sendFile(__dirname + "/public/html/index.html")
 })
 
 app.post("/", (req, res) => {
