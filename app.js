@@ -12,12 +12,15 @@ const portNumber = 3002
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
+//tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/html/rejestracja.html")
 })
 
-app.get("/index.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/index.html")
+//to obsługuje pozostałe
+var odnośnik = ""
+app.get("/"+odnośnik+".html", (req, res) => {
+    res.sendFile(__dirname + "/public/html/"+odnośnik+".html")
 })
 
 app.post("/", (req, res) => {
