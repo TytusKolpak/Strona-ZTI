@@ -1,0 +1,5 @@
+można dodać funkcjionalność liczącą srednią ze wszystkich ocen i wyświetlająca ją obok wody
+/i
+grupowanie wód w kolejności od najlepszej do najgorszej w zależności od średniej
+/i
+wyszukiwanie wody po konkretneym parametrze

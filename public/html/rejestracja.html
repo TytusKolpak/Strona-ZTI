@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Rejestracja</title>
+
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/signup.css" rel="stylesheet">
+    <link href="../css/product.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div>
+        <header class="site-header sticky-top py-1">
+            <nav class="container d-flex flex-column flex-md-row justify-content-between">
+                <a class="py-2 d-none d-md-inline-block" href="index.html">Strona główna</a>
+                <a class="py-2 d-none d-md-inline-block" href="rejestracja.html">Rejestracja</a>
+                <a class="py-2 d-none d-md-inline-block" href="logowanie.html">Zaloguj się</a>
+                <a class="py-2 d-none d-md-inline-block" href="#">Dodaj pozycję</a>
+                <a class="py-2 d-none d-md-inline-block" href="kontakt.html">Kontakt</a>
+            </nav>
+        </header>
+    </div>
+
+
+    <main class="form-signin">
+        <form method="post" acction="/">
+            <img class="mb-4 form-floating center" src="../images/Puste.png" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal center">Rejestracja</h1>
+
+            <div class="form-floating top">
+                <input name="email" type="email" class="form-control" placeholder="name@example.com">
+                <label for="floatingInput">Adress email</label>
+            </div>
+            
+            <div class="form-floating top">
+                <input name="username" type="text" class="form-control" placeholder="Username">
+                <label for="floatingInput">Nazwa użytkownika</label>
+            </div>
+
+            <div class="form-floating bot">
+                <input name="password" type="password" class="form-control" placeholder="Password">
+                <label for="floatingPassword">Hasło</label>
+            </div>
+
+            <div >
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Zarejestruj się</button>
+            </div>
+        </form>
+    </main>
+
+
+
+</body>
+
+</html>
