@@ -31,7 +31,7 @@ app.get("/rejestracja.html", (req, res) => {
     res.sendFile(__dirname + "/public/html/rejestracja.html")
 })
 
-app.post("/", (req, res) => {
+app.post("/rejestracja.html", (req, res) => {
     const inputEmail = req.body.email
     const inputUsername = req.body.username
     const inputPassword = req.body.password;

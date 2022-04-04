@@ -3,3 +3,5 @@ można dodać funkcjionalność liczącą srednią ze wszystkich ocen i wyświet
 grupowanie wód w kolejności od najlepszej do najgorszej w zależności od średniej
 /i
 wyszukiwanie wody po konkretneym parametrze
+/i
+zamiast w div'ach to w tabel z 2 komórkami te bloczki poumieszczać
