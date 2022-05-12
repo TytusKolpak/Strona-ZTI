@@ -6,13 +6,12 @@ img{
   max-width: 960px;
 }
 .site-header {
-  background-color: rgba(0, 0, 0, .85);
+  background-color: rgba(195, 235, 239, .85);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
 }
 .site-header a {
-  color: #8e8e8e;
-  transition: color .15s ease-in-out;
+  color: #000000;
 }
 .site-header a:hover {
   color: #fff;
