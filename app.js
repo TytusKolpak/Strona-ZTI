@@ -50,7 +50,6 @@ app.post("/rejestracja.html", (req, res) => {
                     FNAME: inputUsername,
                     PHONE: inputPassword
                 }
-
             }
         ]
     }
