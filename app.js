@@ -5,16 +5,24 @@ const request = require("request")
 const https = require("https")
 const { options } = require("request")
 const { response } = require("express")
+const ejs = require('ejs');
 
 const app = express()
 const portNumber = 3002
 
+app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
+
+var waterInstances = []
 
 //tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/html/index.html")
+    res.render("main", {
+        iterationNumber : waterInstances.length,
+        waterInstancesM : waterInstances
+    })
 })
 
 //to obsługuje pozostałe
@@ -80,12 +88,22 @@ app.post("/rejestracja.html", (req, res) => {
     request.end()
 })
 
-app.post("/niePowodzenieRej",(req,res)=>{
+app.post("/niePowodzenieRej", (req, res) => {
     res.redirect("/")
 })
 
+app.post("/adder", (req, res) => {
+    let waterInstance = req.body.newWaterInstance
+
+    if (waterInstance !== "") {
+        waterInstances.push(waterInstance)
+        res.redirect("/") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+    }
+}
+)
+
 app.listen(process.env.PORT || portNumber, () => {
-    console.log("Server is running on port: "+ portNumber+" or Heroku.");
+    console.log("Server is running on port: " + portNumber + " or Heroku.");
 })
 
 //API key for mail monkey

@@ -1,0 +1,161 @@
+<%- include("header") -%>
+    <!-- Its now somethingo of an index.html, 
+    the very index might be useless now -->
+    <main>
+
+        <div class="text-center ">
+            <br>
+            <h1 class="display-4 fw-normal">Woda woda woda...</p>
+            </h1>
+            <p class="lead fw-normal">Pytanie nie brzmi: "Czy pić wodę?". <br> Pytanie brzmi: "Jaką?".</p>
+        </div>
+        <!-- każdy kolejny div to kolejna woda -->
+
+        <div class="mainDiv">
+            <!-- Piwniczanka -->
+            <div>
+                <h2 class="display-5">Piwniczanka</h2>
+                <p class="lead">Średnio gazowana</p>
+            </div>
+            <table>
+                <td>
+                    <img src="../images\Piwniczanka.png" alt="Best there is">
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Smak po otwarciu butelki</td>
+                            <td>⚫⚫⚫⚫⚫</td>
+                        </tr>
+                        <tr>
+                            <td>Smak po 8h</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Jakość butelki</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Design butelki</td>
+                            <td>⚫⚫⚫⚪⚪</td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+
+        <div class="mainDiv">
+            <!-- Muszynianka -->
+            <div class="">
+                <h2 class="display-5">Muszynianka</h2>
+                <p class="lead">Średnio gazowana</p>
+            </div>
+            <table>
+                <td>
+                    <img src="../images\Muszynianka.png">
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Smak po otwarciu butelki</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Smak po 8h</td>
+                            <td>⚫⚫⚫⚪⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Jakość butelki</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Design butelki</td>
+                            <td>⚫⚫⚫⚪⚪</td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+
+        <div class="mainDiv">
+            <!-- Nałęczowianka -->
+            <div class="">
+                <h2 class="display-5">Nałęczowianka</h2>
+                <p class="lead">Niegazowana</p>
+            </div>
+            <table>
+                <td>
+                    <img src="../images\Nałęczowianka.png">
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Smak po otwarciu butelki</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Smak po 8h</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Jakość butelki</td>
+                            <td>⚫⚫⚪⚪⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Design butelki</td>
+                            <td>⚫⚫⚫⚫⚪</td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+
+        <div class="mainDiv">
+            <!-- Cisowianka -->
+            <div class="my-3 ">
+                <h2 class="display-5">Cisowianka</h2>
+                <p class="lead">Niegazowana</p>
+            </div>
+            <table>
+                <td>
+                    <img src="..\images\Cisowianka.png">
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Smak po otwarciu butelki</td>
+                            <td>⚫⚪⚪⚪⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Smak po 8h</td>
+                            <td>⚫⚪⚪⚪⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Jakość butelki</td>
+                            <td>⚫⚫⚫⚪⚪</td>
+                        </tr>
+                        <tr>
+                            <td>Design butelki</td>
+                            <td>⚫⚫⚫⚪⚪</td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+        <!-- zmien klase div na to co ma m-3 btn itd, to nie trzeba będzie się bawic za kazdym razem -->
+
+
+        <%for (let index=0; index < iterationNumber; index++) {%>
+            <div class="mainDiv">
+                <%= waterInstancesM[index] %>
+            </div>
+        <%}%>
+
+        <!-- button/adder -->
+        <div class="mainDiv">
+            <%- include("adder") -%>
+        </div>
+
+
+    </main>
+    <%- include("footer") -%>
