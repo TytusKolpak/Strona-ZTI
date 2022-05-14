@@ -1,7 +1,62 @@
-<form method="post" action="/adder">
-    <!-- Komunikacja typu post, przekazuje coś. A gdzie? Do głównego folderu, gdzie poszuka pliku .js-->
-    <input type="text" name="newWaterInstance" placeholder="New Water Instance" autocomplete="off">
-    <!-- Czym będzie to coś? Zmienną tekstową. Jak ją nazwiemy? newItem-->
-    <button type="submit" name="adder" >+</button>
-    <!-- Wykonaj operację -->
-</form> <!-- koniec szablonu do komunikacji z app.js -->
+<!-- To ma być formulaż pozwalający na dodawanie kolejnej pozycji jako woda o konkretnych parametrach -->
+<div class="adder">
+    <form method="post" action="/adder">
+        <div>
+            <input type="text" name="newWaterInstanceName" placeholder="Nazwa" autocomplete="off">
+        </div>
+        <div>
+            <input type="text" name="newWaterInstanceType" placeholder="Typ" autocomplete="off">
+        </div>
+        <div>
+            <!-- zdj -->
+            <table>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="https://cdn-icons-png.flaticon.com/512/2892/2892699.png" alt="No img :C">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Url grafiki:
+                                <input type="url" name="imgUrl">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <!-- idk normalnie z pliku nie chciało pokazywać obrazu -->
+                <!-- zdj -->
+                <td>
+                    <table>
+                        <tr>
+                            <td>Smak po otwarciu butelki</td>
+                            <td>
+                                <input type="range" name="SPOB" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Smak po 8h</td>
+                            <td>
+                                <input type="range" name="SP8H" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jakość butelki</td>
+                            <td>
+                                <input type="range" name="JB" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Design butelki</td>
+                            <td>
+                                <input type="range" name="DB" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+        <button type="submit">Dodaj</button>
+    </form>
+</div>

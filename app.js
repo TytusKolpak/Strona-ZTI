@@ -14,15 +14,46 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
-var waterInstances = []
+// trzeba tu zrobić obbiekt wody
+var allWaterInstances = []
+
+class waterInstance {
+    constructor(Name, Type, imgUrl, SPOB, SP8H, JB, DB) {
+        this.Name = Name
+        this.Type=Type
+        this.imgUrl=imgUrl
+        this.SPOB=SPOB
+        this.SP8H=SP8H
+        this.JB=JB
+        this.DB=DB
+    }
+    show(){
+        console.log(this);
+    }
+}
+
+app.post("/adder", (req, res) => {
+    
+    //tworzę obiekt
+    const nextWater = new waterInstance(
+        req.body.newWaterInstanceName,
+        req.body.newWaterInstanceType,
+        req.body.imgUrl,
+        req.body.SPOB,
+        req.body.SP8H,
+        req.body.JB,
+        req.body.DB
+    )
+    if (nextWater.Name !== '' && nextWater.Type !== '') {
+        allWaterInstances.push(nextWater)
+        nextWater.show()//wypisuje do konsoli
+        res.redirect("/dodawanie.html") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+    }
+})
 
 //tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/html/index.html")
-    res.render("main", {
-        iterationNumber : waterInstances.length,
-        waterInstancesM : waterInstances
-    })
 })
 
 //to obsługuje pozostałe
@@ -38,6 +69,13 @@ app.get("/logowanie.html", (req, res) => {
 app.get("/rejestracja.html", (req, res) => {
     res.sendFile(__dirname + "/public/html/rejestracja.html")
 })
+app.get("/dodawanie.html", (req, res) => {
+    res.render("main", {
+        iterationNumber: allWaterInstances.length,
+        allWaterInstancesM: allWaterInstances
+    })
+})
+
 
 app.post("/rejestracja.html", (req, res) => {
     const inputEmail = req.body.email
@@ -91,16 +129,6 @@ app.post("/rejestracja.html", (req, res) => {
 app.post("/niePowodzenieRej", (req, res) => {
     res.redirect("/")
 })
-
-app.post("/adder", (req, res) => {
-    let waterInstance = req.body.newWaterInstance
-
-    if (waterInstance !== "") {
-        waterInstances.push(waterInstance)
-        res.redirect("/") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
-    }
-}
-)
 
 app.listen(process.env.PORT || portNumber, () => {
     console.log("Server is running on port: " + portNumber + " or Heroku.");
