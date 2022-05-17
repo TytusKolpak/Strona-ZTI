@@ -8,7 +8,7 @@ const { response } = require("express")
 const ejs = require('ejs');
 
 const app = express()
-const portNumber = 3002
+const portNumber = 40000
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"))
@@ -33,7 +33,6 @@ class waterInstance {
 }
 
 app.post("/adder", (req, res) => {
-    
     //tworzę obiekt
     const nextWater = new waterInstance(
         req.body.newWaterInstanceName,
@@ -47,8 +46,14 @@ app.post("/adder", (req, res) => {
     if (nextWater.Name !== '' && nextWater.Type !== '') {
         allWaterInstances.push(nextWater)
         nextWater.show()//wypisuje do konsoli
-        res.redirect("/dodawanie.html") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
     }
+    
+    res.redirect("/dodawanie.html") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+})
+
+app.post("/resetAdder", (req, res) => {
+    allWaterInstances = []
+    res.redirect("/dodawanie.html")
 })
 
 //tu się zaczyna po wejściu na stronę
