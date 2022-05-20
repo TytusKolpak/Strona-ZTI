@@ -1,60 +1,70 @@
 //paczki
+//Baza danych mongoDB
+const mongoose = require("mongoose")       //taka baza
+mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
+
 const express = require("express")
 const bodyParser = require("body-parser")
 const request = require("request")
 const https = require("https")
 const { options } = require("request")
 const { response } = require("express")
+//Embeded Java Script - funkcje z dynamicznym HTMLem
 const ejs = require('ejs');
 
 const app = express()
-const portNumber = 40000
+const portNumber = 3000
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// trzeba tu zrobić obbiekt wody
 var allWaterInstances = []
 
-class waterInstance {
-    constructor(Name, Type, imgUrl, SPOB, SP8H, JB, DB) {
-        this.Name = Name
-        this.Type=Type
-        this.imgUrl=imgUrl
-        this.SPOB=SPOB
-        this.SP8H=SP8H
-        this.JB=JB
-        this.DB=DB
+//create a blueprint for objects - a schema
+const waterSchema = new mongoose.Schema({
+    name: String,
+    type: String,
+    imgUrl: String,
+    rating: {
+        SPOB: Number,
+        SP8H: Number,
+        JB: Number,
+        DB: Number
     }
-    show(){
-        console.log(this);
-    }
-}
+})
+//create Class   in     chosen collection
+const Water = mongoose.model("wc1", waterSchema)
 
 app.post("/adder", (req, res) => {
-    //tworzę obiekt
-    const nextWater = new waterInstance(
-        req.body.newWaterInstanceName,
-        req.body.newWaterInstanceType,
-        req.body.imgUrl,
-        req.body.SPOB,
-        req.body.SP8H,
-        req.body.JB,
-        req.body.DB
-    )
-    if (nextWater.Name !== '' && nextWater.Type !== '') {
-        allWaterInstances.push(nextWater)
-        nextWater.show()//wypisuje do konsoli
-    }
-    
+    //create object of that class
+    const WaterInstanceInDB = new Water({
+        name: req.body.newWaterInstanceName,
+        type: req.body.newWaterInstanceType,
+        imgUrl: req.body.imgUrl,
+        rating: {
+            SPOB: req.body.SPOB,
+            SP8H: req.body.SP8H,
+            JB: req.body.JB,
+            DB: req.body.DB
+        }
+    })
+    allWaterInstances.push(WaterInstanceInDB)
+    WaterInstanceInDB.save();// umieść w podanej kolekcji
     res.redirect("/dodawanie.html") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
 })
 
 app.post("/resetAdder", (req, res) => {
-    allWaterInstances = []
+    Water.deleteMany({"rating.SPOB" :{$lte:5}}, function(err){//każda ma 5 lub mniej, czyli delete all
+        if (err) {
+            console.log(err);
+        } else {
+            allWaterInstances=[]
+            console.log("Deleted all");
+        }
+    })
     res.redirect("/dodawanie.html")
 })
+
 
 //tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {

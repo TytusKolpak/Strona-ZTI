@@ -9,10 +9,10 @@
             <div class="mainDiv">
                 <div>
                     <h2 class="display-5">
-                        <%= allWaterInstancesM[index].Name %>
+                        <%= allWaterInstancesM[index].name %>
                     </h2>
                     <p class="lead">
-                        <%= allWaterInstancesM[index].Type %>
+                        <%= allWaterInstancesM[index].type %>
                     </p>
                 </div>
                 <table>
@@ -24,10 +24,10 @@
                             <tr>
                                 <td>Smak po otwarciu butelki</td>
                                 <td>
-                                    <%for (let index1=0; index1 < allWaterInstancesM[index].SPOB; index1++) {%>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.SPOB; index1++) {%>
                                         ⚫
                                     <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].SPOB; index2 < 5; index2++) {%>
+                                    <%for (let index2=allWaterInstancesM[index].rating.SPOB; index2 < 5; index2++) {%>
                                         ⚪
                                     <%}%>
                                 </td>
@@ -35,10 +35,10 @@
                             <tr>
                                 <td>Smak po 8h</td>
                                 <td>
-                                    <%for (let index1=0; index1 < allWaterInstancesM[index].SP8H; index1++) {%>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.SP8H; index1++) {%>
                                         ⚫
                                     <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].SP8H; index2 < 5; index2++) {%>
+                                    <%for (let index2=allWaterInstancesM[index].rating.SP8H; index2 < 5; index2++) {%>
                                         ⚪
                                     <%}%>
                                 </td>
@@ -46,10 +46,10 @@
                             <tr>
                                 <td>Jakość butelki</td>
                                 <td>
-                                    <%for (let index1=0; index1 < allWaterInstancesM[index].JB; index1++) {%>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.JB; index1++) {%>
                                         ⚫
                                     <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].JB; index2 < 5; index2++) {%>
+                                    <%for (let index2=allWaterInstancesM[index].rating.JB; index2 < 5; index2++) {%>
                                         ⚪
                                     <%}%>
                                 </td>
@@ -57,10 +57,10 @@
                             <tr>
                                 <td>Design butelki</td>
                                 <td>
-                                    <%for (let index1=0; index1 < allWaterInstancesM[index].DB; index1++) {%>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.DB; index1++) {%>
                                         ⚫
                                     <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].DB; index2 < 5; index2++) {%>
+                                    <%for (let index2=allWaterInstancesM[index].rating.DB; index2 < 5; index2++) {%>
                                         ⚪
                                     <%}%>
                                 </td>
