@@ -6,14 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="..\css\bootstrap.css" rel="stylesheet">
-  <title>Powodzenie</title>
+  <title>Error</title>
 </head>
 
 <body>
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4">Powodzenie!</h1>
-      <p class="lead">Udało nam się poprawnie zarejestrować twoje konto.</p>
+      <h1 class="display-4">Oh no!</h1>
+      <p class="lead">There was an issue and we could not create your account</p>
+    
+      <form action="/niePowodzenieRej" method="post">
+        <button class="btn btn-lg btn-warning" type="submit" name="button">Try again</button>
+      </form>
     </div>
   </div>
 </body>

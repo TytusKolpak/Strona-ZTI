@@ -4,4 +4,8 @@ grupowanie wód w kolejności od najlepszej do najgorszej w zależności od śre
 /i
 wyszukiwanie wody po konkretneym parametrze
 /i
-zamiast w div'ach to w tabel z 2 komórkami te bloczki poumieszczać
+
+
+Kolejny krok:
+-Tworzenie konta- na podstawie którego będą wyświetlane instancej wody
+-?? tyle

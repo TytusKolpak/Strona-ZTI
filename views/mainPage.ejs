@@ -1,33 +1,12 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Tytus Kołpak</title>
-    <link href="\css\bootstrap.css" rel="stylesheet">
-    <link href="\css\product.css" rel="stylesheet">
-</head>
-
-
-<body>
-
-    <header class="site-header sticky-top py-1 mymy-5">
-        <nav class="container d-flex flex-column flex-md-row justify-content-between">
-            <a class="py-2 d-none d-md-inline-block" href="index.html">Strona główna</a>
-            <a class="py-2 d-none d-md-inline-block" href="rejestracja.html">Rejestracja</a>
-            <a class="py-2 d-none d-md-inline-block" href="logowanie.html">Zaloguj się</a>
-            <a class="py-2 d-none d-md-inline-block" href="dodawanie.html">Dodaj pozycję</a>
-            <a class="py-2 d-none d-md-inline-block" href="kontakt.html">Kontakt</a>
-        </nav>
-    </header>
+<%- include("header") -%>
 
     <main>
 
         <div class="text-center ">
             <br>
-            <h1 class="display-4 fw-normal">Woda woda woda...</p>
+            <h1 class="display-4 fw-normal">Water water water...</p>
             </h1>
-            <p class="lead fw-normal">Pytanie nie brzmi: "Czy pić wodę?". <br> Pytanie brzmi: "Jaką?".</p>
+            <p class="lead fw-normal">To drink, or not to drink?<br>That is the question.</p>
         </div>
         <!-- każdy kolejny div to kolejna woda -->
 
@@ -44,19 +23,19 @@
                 <td>
                     <table>
                         <tr>
-                            <td>Smak po otwarciu butelki</td>
+                            <td>Initial taste</td>
                             <td>⚫⚫⚫⚫⚫</td>
                         </tr>
                         <tr>
-                            <td>Smak po 8h</td>
+                            <td>Taste after 8h</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Jakość butelki</td>
+                            <td>Bottle quality</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Design butelki</td>
+                            <td>Bottle design</td>
                             <td>⚫⚫⚫⚪⚪</td>
                         </tr>
                     </table>
@@ -77,19 +56,19 @@
                 <td>
                     <table>
                         <tr>
-                            <td>Smak po otwarciu butelki</td>
+                            <td>Initial taste</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Smak po 8h</td>
+                            <td>Taste after 8h</td>
                             <td>⚫⚫⚫⚪⚪</td>
                         </tr>
                         <tr>
-                            <td>Jakość butelki</td>
+                            <td>Bottle quality</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Design butelki</td>
+                            <td>Bottle design</td>
                             <td>⚫⚫⚫⚪⚪</td>
                         </tr>
                     </table>
@@ -110,19 +89,19 @@
                 <td>
                     <table>
                         <tr>
-                            <td>Smak po otwarciu butelki</td>
+                            <td>Initial taste</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Smak po 8h</td>
+                            <td>Taste after 8h</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                         <tr>
-                            <td>Jakość butelki</td>
+                            <td>Bottle quality</td>
                             <td>⚫⚫⚪⚪⚪</td>
                         </tr>
                         <tr>
-                            <td>Design butelki</td>
+                            <td>Bottle design</td>
                             <td>⚫⚫⚫⚫⚪</td>
                         </tr>
                     </table>
@@ -143,19 +122,19 @@
                 <td>
                     <table>
                         <tr>
-                            <td>Smak po otwarciu butelki</td>
+                            <td>Initial taste</td>
                             <td>⚫⚪⚪⚪⚪</td>
                         </tr>
                         <tr>
-                            <td>Smak po 8h</td>
+                            <td>Taste after 8h</td>
                             <td>⚫⚪⚪⚪⚪</td>
                         </tr>
                         <tr>
-                            <td>Jakość butelki</td>
+                            <td>Bottle quality</td>
                             <td>⚫⚫⚫⚪⚪</td>
                         </tr>
                         <tr>
-                            <td>Design butelki</td>
+                            <td>Bottle design</td>
                             <td>⚫⚫⚫⚪⚪</td>
                         </tr>
                     </table>
@@ -167,9 +146,6 @@
 
 
     </main>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="index.js"></script>
-    <!-- to i jquery muszą być w tej kolejności, bo index wykorzystuje jqery, a nie na odwrót-->
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 <!-- To ma być formulaż pozwalający na dodawanie kolejnej pozycji jako woda o konkretnych parametrach -->
 <div class="adder">
-    <form method="post" action="/adder">
+    <form method="post" action="/add">
         <div>
             <input type="text" name="newWaterInstanceName" placeholder="Nazwa" autocomplete="off">
         </div>
@@ -19,7 +19,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Url grafiki:
+                                Url of the graphic
                                 <input type="url" name="imgUrl">
                             </td>
                         </tr>
@@ -30,38 +30,38 @@
                 <td>
                     <table>
                         <tr>
-                            <td>Smak po otwarciu butelki</td>
+                            <td>Initial taste</td>
                             <td>
-                                <input type="range" name="SPOB" min="0" max="5" value="0">
+                                <input type="range" name="IT" min="0" max="5" value="0">
                             </td>
                         </tr>
                         <tr>
-                            <td>Smak po 8h</td>
+                            <td>Taste after 8h</td>
                             <td>
-                                <input type="range" name="SP8H" min="0" max="5" value="0">
+                                <input type="range" name="TA8H" min="0" max="5" value="0">
                             </td>
                         </tr>
                         <tr>
-                            <td>Jakość butelki</td>
+                            <td>Bottle quality</td>
                             <td>
-                                <input type="range" name="JB" min="0" max="5" value="0">
+                                <input type="range" name="BQ" min="0" max="5" value="0">
                             </td>
                         </tr>
                         <tr>
-                            <td>Design butelki</td>
+                            <td>Bottle design</td>
                             <td>
-                                <input type="range" name="DB" min="0" max="5" value="0">
+                                <input type="range" name="BD" min="0" max="5" value="0">
                             </td>
                         </tr>
                     </table>
                 </td>
             </table>
         </div>
-        <button type="submit">Dodaj</button>
+        <button type="submit">Add</button>
     </form>
 </div>
 <div>
     <form action="/resetAdder" method="post">
-        <button type="submit"> Delete all </button>
+        <button type="submit">Delete all</button>
     </form>
 </div>

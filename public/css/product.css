@@ -2,22 +2,21 @@
   background-color: rgb(195, 235, 239, .35);
   padding: 1rem;
 }
-.buttonBlack{
-  content: '⚫';
-  /* padding: 0px 5px;
-  border-radius: 50%;
-  background-color: rgb(56, 56, 56);
-  border: 1px;
-  border-color: #000000; */
+.bot{
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
-img{
-  width: 200px;
-  height: 200px;
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
+
 .container {
   max-width: 960px;
 }
-
 .site-header {
   background-color: rgba(195, 235, 239, .85);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -30,9 +29,7 @@ img{
   color: #fff;
   text-decoration: none;
 }
-.btn-outline-secondary:focus{
-  background-color: rgba(73, 235, 10, 0.85);
-}
+
 .flex-equal > * {
   flex: 1;
 }
@@ -44,9 +41,7 @@ img{
 html{
   background-image: -webkit-linear-gradient(180deg,#40514E 5%, #11999E 25%, #30E3CA 40%, #E4F9F5 65%);
 }
-.divCenter{
-  margin: auto;
-}
+
 .mainDiv{
   margin: 1rem !important;
   background-color: rgb(195, 235, 239, .35);
@@ -72,4 +67,26 @@ html{
   cursor: pointer;
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
+}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.top {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.mid{
+  margin-bottom: -1px;
+  border-radius: 0px;
+}
+
+
+img{
+  width: 200px;
+  height: 200px;
 }

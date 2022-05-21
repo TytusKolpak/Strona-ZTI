@@ -26,16 +26,26 @@ const waterSchema = new mongoose.Schema({
     type: String,
     imgUrl: String,
     rating: {
-        SPOB: Number,
-        SP8H: Number,
-        JB: Number,
-        DB: Number
+        IT: Number,
+        TA8H: Number,
+        BQ: Number,
+        BD: Number
     }
+    //coś w sytlu "mail dodającego - poźniej pola wody będą dopasowywane ze wspólnej kolekcji urzytkownikom po ich mailu"
 })
 //create Class   in     chosen collection
 const Water = mongoose.model("wc1", waterSchema)
 
-app.post("/adder", (req, res) => {
+//create a blueprint for objects - a schema
+const userSchema = new mongoose.Schema({
+    email: String,
+    username: String,
+    password: String
+})
+//create Class   in     chosen collection
+const User = mongoose.model("uc1", userSchema)
+
+app.post("/add", (req, res) => {
     //create object of that class
     const WaterInstanceInDB = new Water({
         name: req.body.newWaterInstanceName,
@@ -50,108 +60,54 @@ app.post("/adder", (req, res) => {
     })
     allWaterInstances.push(WaterInstanceInDB)
     WaterInstanceInDB.save();// umieść w podanej kolekcji
-    res.redirect("/dodawanie.html") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+    res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
 })
 
 app.post("/resetAdder", (req, res) => {
-    Water.deleteMany({"rating.SPOB" :{$lte:5}}, function(err){//każda ma 5 lub mniej, czyli delete all
+    Water.deleteMany({ "rating.SPOB": { $lte: 5 } }, function (err) {//każda ma 5 lub mniej, czyli delete all
         if (err) {
             console.log(err);
         } else {
-            allWaterInstances=[]
+            allWaterInstances = []
             console.log("Deleted all");
         }
     })
-    res.redirect("/dodawanie.html")
+    res.redirect("/adder")
 })
 
+app.post("/signUpSucces", (req, res) => {
+    const inputEmail = req.body.email
+    const inputUsername = req.body.username
+    const inputPassword = req.body.password
+    console.log(inputEmail+" "+inputUsername+" "+inputPassword);
+    //ale zanim to to jeszcze input tych danych do pliku
+    res.sendFile(__dirname+"/public/html/sighUpSucces.html")
+})
 
 //tu się zaczyna po wejściu na stronę
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/html/index.html")
+    res.render("mainPage")
 })
-
 //to obsługuje pozostałe
-app.get("/index.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/index.html")
+app.get("/mainPage", (req, res) => {
+    res.render("mainPage")
 })
-app.get("/kontakt.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html//kontakt.html")
+app.get("/contact", (req, res) => {
+    res.render("contact")
 })
-app.get("/logowanie.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/logowanie.html")
+app.get("/logIn", (req, res) => {
+    res.render("logIn")
 })
-app.get("/rejestracja.html", (req, res) => {
-    res.sendFile(__dirname + "/public/html/rejestracja.html")
+app.get("/signUp", (req, res) => {
+    res.render("signUp")
 })
-app.get("/dodawanie.html", (req, res) => {
+app.get("/adder", (req, res) => {
     res.render("main", {
         iterationNumber: allWaterInstances.length,
         allWaterInstancesM: allWaterInstances
     })
 })
 
-
-app.post("/rejestracja.html", (req, res) => {
-    const inputEmail = req.body.email
-    const inputUsername = req.body.username
-    const inputPassword = req.body.password;
-
-    console.log("User's input Email   : " + inputEmail + ",")
-    console.log("User's input Username: " + inputUsername + ",")
-    console.log("User's input Password: " + inputPassword + ",")
-
-
-    const data = {
-        members: [
-            {
-                email_address: inputEmail,
-                status: "subscribed",
-                merge_fields: {
-                    FNAME: inputUsername,
-                    PHONE: inputPassword
-                }
-            }
-        ]
-    }
-
-    const jsonData = JSON.stringify(data)
-    const url = "https://us14.api.mailchimp.com/3.0/lists/c57d0e69d2"
-
-    const options = {
-        method: "POST",
-        auth: "tytus1:39ea43e005ddc02bc7ff0bbef797a66a-us14",
-    }
-
-    const request = https.request(url, options, (response) => {
-
-        if (response.statusCode === 200) {
-            res.sendFile(__dirname + "/public/html/powodzenieRej.html")
-        } else {
-            res.sendFile(__dirname + "/public/html/niePowodzenieRej.html")
-        }
-
-
-        res.on("data", (data) => {
-            console.log(JSON.parse(data));
-        })
-    })
-
-    request.write(jsonData)
-    request.end()
-})
-
-app.post("/niePowodzenieRej", (req, res) => {
-    res.redirect("/")
-})
-
 app.listen(process.env.PORT || portNumber, () => {
     console.log("Server is running on port: " + portNumber + " or Heroku.");
 })
-
-//API key for mail monkey
-//39ea43e005ddc02bc7ff0bbef797a66a-us14
-//unique audience c57d0e69d2
-//1. git add.
-//2. git commit -m "któryś commit"
-//3, git push heroku master
