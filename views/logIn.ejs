@@ -1,17 +1,16 @@
 <%- include("header") -%>
-
-    <main class="form-signin">
+    <main class="form-signin center">
         <form action="/logInAttempt" method="post">
             <img class="mb-4 form-floating center" src="../images/Puste.png" alt="" width="72" height="57">
 
             <div class="form-floating">
-                <input name="username" type="text" class="form-control top"
-                id="floatingInput" placeholder="Username" autocomplete="off">
+                <input name="username" type="text" class="form-control top" id="floatingInput" placeholder="Username"
+                    autocomplete="off">
                 <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating">
-                <input name="password" type="password" class="form-control bot"
-                id="floatingPassword" placeholder="Password"  autocomplete="off">
+                <input name="password" type="password" class="form-control bot" id="floatingPassword"
+                    placeholder="Password" autocomplete="off">
                 <label for="floatingPassword">Password</label>
             </div>
 
@@ -22,8 +21,13 @@
             </div> -->
             <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
         </form>
+
     </main>
 
+    <div
+        style=" position: fixed; text-align: center; bottom: 0px; width: 100%;background-color: rgba(195, 235, 239, .85);">
+        <%= currentUser %>
+    </div>
 
     </body>
 

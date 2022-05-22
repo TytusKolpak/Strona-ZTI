@@ -19,6 +19,7 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 var allWaterInstances = []
+var currentUser = ' '
 
 //create a blueprint for objects - a schema
 const waterSchema = new mongoose.Schema({
@@ -57,7 +58,8 @@ app.post("/add", (req, res) => {
             TA8H: req.body.TA8H,
             BQ: req.body.BQ,
             BD: req.body.BD
-        }
+        },
+        owner: currentUser
     })
     allWaterInstances.push(WaterInstanceInDB)
     WaterInstanceInDB.save();// umieść w podanej kolekcji
@@ -65,7 +67,7 @@ app.post("/add", (req, res) => {
 })
 
 app.post("/showInstances", (req, res) => {
-    Water.find(function (err, foundItems) {
+    Water.find({ "owner": currentUser }, function (err, foundItems) {
         if (err) {
             console.log(err);
         } else {
@@ -79,14 +81,14 @@ app.post("/showInstances", (req, res) => {
 app.post("/resetAdder", (req, res) => {
     //każda ma 5 lub mniej, czyli delete all
     //później trzba będzie dodać waruenk tego kto jest właścicielem
-    Water.deleteMany({ "rating.IT": { $lte: 5 } }, function (err) {
+    Water.deleteMany({ "owner": currentUser }, function (err) {
         if (err) {
             console.log(err);
         } else {
             allWaterInstances = []
-            console.log("Deleted all");
         }
     })
+
     res.redirect("/adder")
 })
 
@@ -98,7 +100,7 @@ app.post("/signUpAttempt", (req, res) => {
             console.log(err);
         } else {
             console.log(foundItem);
-            console.log('input username: ' +req.body.username);
+            console.log('input username: ' + req.body.username);
             if (foundItem !== null) {//if already exists
                 res.sendFile(__dirname + "/public/html/signUpFail.html")
             } else {
@@ -115,30 +117,29 @@ app.post("/signUpAttempt", (req, res) => {
     })
 })
 
-app.post("/logInAttempt", (req, res) => {
-    //wszystkie logi poza err można skipnąć
+app.post("/logInAttempt", (req, res) => { 
+    
     User.findOne({ "username": req.body.username }, function (err, foundItem) {
+        var myResponse = 'ok'
         if (err) {
             console.log(err);
         } else {
             if (foundItem !== null) {
-                console.log('username proper ' + foundItem.username);
-                console.log('username input ' + req.body.username);
-                console.log('password proper ' + foundItem.password);
-                console.log("password input " + req.body.password);
                 if (foundItem.password === req.body.password) {
-                    console.log("zalogowano");
-                    //jakiś redirect
+                    currentUser = foundItem.username
+                    myResponse = currentUser
+                    allWaterInstances = []
                 } else {
-                    console.log('niepoprawne hasło');
+                    myResponse = 'niepoprawne hasło'
                 }
             } else {
-                console.log('nie ma takiego użytkownika');
+                myResponse = 'nie ma takiego użytkownika'
             }
         }
+        res.render("logIn", {
+            currentUser: myResponse
+        })
     })
-
-    res.redirect("logIn")
 })
 
 //tu się zaczyna po wejściu na stronę
@@ -153,13 +154,16 @@ app.get("/contact", (req, res) => {
     res.render("contact")
 })
 app.get("/logIn", (req, res) => {
-    res.render("logIn")
+    res.render("logIn", {
+        currentUser: currentUser
+    })
 })
 app.get("/signUp", (req, res) => {
     res.render("signUp")
 })
 app.get("/adder", (req, res) => {
     res.render("main", {
+        currentUser: currentUser,
         iterationNumber: allWaterInstances.length,
         allWaterInstancesM: allWaterInstances
     })
