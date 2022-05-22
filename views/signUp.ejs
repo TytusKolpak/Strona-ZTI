@@ -1,19 +1,19 @@
 <%- include("header") -%>
 
     <main class="form-signin">
-        <form action="/signUpSucces" method="post" class="center">
+        <form action="/signUpAttempt" method="post" class="center">
             <img class="mb-4 form-floating center" src="../images/Puste.png" alt="" width="72" height="57">
 
             <div class="form-floating">
-                <input name="username" type="text" class="form-control top" id="floatingInput" placeholder="Username">
+                <input name="username" type="text" class="form-control top" id="floatingInput" placeholder="Username" autocomplete="off">
                 <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating">
-                <input name="email" type="email" class="form-control mid" id="floatingInput" placeholder="name@example.com">
+                <input name="email" type="email" class="form-control mid" id="floatingInput" placeholder="name@example.com" autocomplete="off">
                 <label for="floatingInput">Email adress</label>
             </div>
             <div class="form-floating">
-                <input name="password" type="password" class="form-control bot" id="floatingPassword" placeholder="Password">
+                <input name="password" type="password" class="form-control bot" id="floatingPassword" placeholder="Password" autocomplete="off">
                 <label for="floatingPassword">Password</label>
             </div>
 

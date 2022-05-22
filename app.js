@@ -30,7 +30,8 @@ const waterSchema = new mongoose.Schema({
         TA8H: Number,
         BQ: Number,
         BD: Number
-    }
+    },
+    owner: String
     //coś w sytlu "mail dodającego - poźniej pola wody będą dopasowywane ze wspólnej kolekcji urzytkownikom po ich mailu"
 })
 //create Class   in     chosen collection
@@ -52,10 +53,10 @@ app.post("/add", (req, res) => {
         type: req.body.newWaterInstanceType,
         imgUrl: req.body.imgUrl,
         rating: {
-            SPOB: req.body.SPOB,
-            SP8H: req.body.SP8H,
-            JB: req.body.JB,
-            DB: req.body.DB
+            IT: req.body.IT,
+            TA8H: req.body.TA8H,
+            BQ: req.body.BQ,
+            BD: req.body.BD
         }
     })
     allWaterInstances.push(WaterInstanceInDB)
@@ -63,8 +64,22 @@ app.post("/add", (req, res) => {
     res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
 })
 
+app.post("/showInstances", (req, res) => {
+    Water.find(function (err, foundItems) {
+        if (err) {
+            console.log(err);
+        } else {
+            allWaterInstances = foundItems
+            //wczytaj do lokalnego arraya pozycje z kolekcji wody wc1 oznaczonej jako model Water
+        }
+    })
+    res.redirect("/adder")
+})
+
 app.post("/resetAdder", (req, res) => {
-    Water.deleteMany({ "rating.SPOB": { $lte: 5 } }, function (err) {//każda ma 5 lub mniej, czyli delete all
+    //każda ma 5 lub mniej, czyli delete all
+    //później trzba będzie dodać waruenk tego kto jest właścicielem
+    Water.deleteMany({ "rating.IT": { $lte: 5 } }, function (err) {
         if (err) {
             console.log(err);
         } else {
@@ -75,13 +90,55 @@ app.post("/resetAdder", (req, res) => {
     res.redirect("/adder")
 })
 
-app.post("/signUpSucces", (req, res) => {
-    const inputEmail = req.body.email
-    const inputUsername = req.body.username
-    const inputPassword = req.body.password
-    console.log(inputEmail+" "+inputUsername+" "+inputPassword);
-    //ale zanim to to jeszcze input tych danych do pliku
-    res.sendFile(__dirname+"/public/html/sighUpSucces.html")
+app.post("/signUpAttempt", (req, res) => {
+
+    //when someone tries to create an account with a taken name it should turn back error taken name
+    User.findOne({ "username": req.body.username }, function (err, foundItem) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(foundItem);
+            console.log('input username: ' +req.body.username);
+            if (foundItem !== null) {//if already exists
+                res.sendFile(__dirname + "/public/html/signUpFail.html")
+            } else {
+                //create object of that class
+                const UserInstanceInDB = new User({
+                    email: req.body.email,
+                    username: req.body.username,
+                    password: req.body.password
+                })
+                UserInstanceInDB.save();// and save it in database
+                res.sendFile(__dirname + "/public/html/signUpSucces.html")
+            }
+        }
+    })
+})
+
+app.post("/logInAttempt", (req, res) => {
+    //wszystkie logi poza err można skipnąć
+    User.findOne({ "username": req.body.username }, function (err, foundItem) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundItem !== null) {
+                console.log('username proper ' + foundItem.username);
+                console.log('username input ' + req.body.username);
+                console.log('password proper ' + foundItem.password);
+                console.log("password input " + req.body.password);
+                if (foundItem.password === req.body.password) {
+                    console.log("zalogowano");
+                    //jakiś redirect
+                } else {
+                    console.log('niepoprawne hasło');
+                }
+            } else {
+                console.log('nie ma takiego użytkownika');
+            }
+        }
+    })
+
+    res.redirect("logIn")
 })
 
 //tu się zaczyna po wejściu na stronę

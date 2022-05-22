@@ -2,10 +2,10 @@
 <div class="adder">
     <form method="post" action="/add">
         <div>
-            <input type="text" name="newWaterInstanceName" placeholder="Nazwa" autocomplete="off">
+            <input type="text" name="newWaterInstanceName" placeholder="Name" autocomplete="off">
         </div>
         <div>
-            <input type="text" name="newWaterInstanceType" placeholder="Typ" autocomplete="off">
+            <input type="text" name="newWaterInstanceType" placeholder="Type" autocomplete="off">
         </div>
         <div>
             <!-- zdj -->
@@ -19,8 +19,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Url of the graphic
-                                <input type="url" name="imgUrl">
+                                <input type="url" name="imgUrl" placeholder="Url of the graphic">
                             </td>
                         </tr>
                     </table>
@@ -63,5 +62,8 @@
 <div>
     <form action="/resetAdder" method="post">
         <button type="submit">Delete all</button>
+    </form>
+    <form action="/showInstances" method="post">
+        <button type="submit">Show my current collection</button>
     </form>
 </div>
