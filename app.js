@@ -20,6 +20,7 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 var allWaterInstances = []
 var currentUser = ' '
+var msgColor = 'black'
 
 //create a blueprint for objects - a schema
 const waterSchema = new mongoose.Schema({
@@ -99,8 +100,6 @@ app.post("/signUpAttempt", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundItem);
-            console.log('input username: ' + req.body.username);
             if (foundItem !== null) {//if already exists
                 res.sendFile(__dirname + "/public/html/signUpFail.html")
             } else {
@@ -117,8 +116,8 @@ app.post("/signUpAttempt", (req, res) => {
     })
 })
 
-app.post("/logInAttempt", (req, res) => { 
-    
+app.post("/logInAttempt", (req, res) => {
+
     User.findOne({ "username": req.body.username }, function (err, foundItem) {
         var myResponse = 'ok'
         if (err) {
@@ -129,15 +128,20 @@ app.post("/logInAttempt", (req, res) => {
                     currentUser = foundItem.username
                     myResponse = currentUser
                     allWaterInstances = []
+                    msgColor = 'black'
                 } else {
-                    myResponse = 'niepoprawne hasło'
+                    msgColor = 'red'
+                    myResponse = 'Invalid password'
                 }
             } else {
-                myResponse = 'nie ma takiego użytkownika'
+                msgColor = 'red'
+                myResponse = 'There is no such user'
             }
         }
+
         res.render("logIn", {
-            currentUser: myResponse
+            currentUser: myResponse,
+            msgColor: msgColor
         })
     })
 })
@@ -155,17 +159,20 @@ app.get("/contact", (req, res) => {
 })
 app.get("/logIn", (req, res) => {
     res.render("logIn", {
-        currentUser: currentUser
+        currentUser: currentUser,
+        msgColor: msgColor
     })
 })
 app.get("/signUp", (req, res) => {
     res.render("signUp")
 })
 app.get("/adder", (req, res) => {
+    msgColor = 'black'
     res.render("main", {
         currentUser: currentUser,
         iterationNumber: allWaterInstances.length,
-        allWaterInstancesM: allWaterInstances
+        allWaterInstancesM: allWaterInstances,
+        msgColor: msgColor
     })
 })
 

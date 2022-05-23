@@ -26,10 +26,11 @@
                                 <td>
                                     <%for (let index1=0; index1 < allWaterInstancesM[index].rating.IT; index1++) {%>
                                         ⚫
-                                    <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].rating.IT; index2 < 5; index2++) {%>
-                                        ⚪
-                                    <%}%>
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.IT; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
                                 </td>
                             </tr>
                             <tr>
@@ -37,10 +38,11 @@
                                 <td>
                                     <%for (let index1=0; index1 < allWaterInstancesM[index].rating.TA8H; index1++) {%>
                                         ⚫
-                                    <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2 < 5; index2++) {%>
-                                        ⚪
-                                    <%}%>
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2 < 5;
+                                                index2++) {%>
+                                                ⚪
+                                                <%}%>
                                 </td>
                             </tr>
                             <tr>
@@ -48,10 +50,11 @@
                                 <td>
                                     <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BQ; index1++) {%>
                                         ⚫
-                                    <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 < 5; index2++) {%>
-                                        ⚪
-                                    <%}%>
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
                                 </td>
                             </tr>
                             <tr>
@@ -59,10 +62,11 @@
                                 <td>
                                     <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BD; index1++) {%>
                                         ⚫
-                                    <%}%>
-                                    <%for (let index2=allWaterInstancesM[index].rating.BD; index2 < 5; index2++) {%>
-                                        ⚪
-                                    <%}%>
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.BD; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
                                 </td>
                             </tr>
                         </table>
@@ -71,7 +75,5 @@
             </div>
             <%}%>
     </main>
-    
-    <div style=" position: fixed; text-align: center; bottom: 0px; width: 100%;background-color: rgba(195, 235, 239, .85);">
-        <%= currentUser %>
-    </div>
+
+    <%- include("message") -%>
