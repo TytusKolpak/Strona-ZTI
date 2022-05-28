@@ -13,6 +13,7 @@ const { response } = require("express")
 const ejs = require('ejs');
 const { strict } = require("assert")
 const { off } = require("process")
+const { redirect } = require("express/lib/response")
 
 const app = express()
 const portNumber = 3000
@@ -22,12 +23,9 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 var allWaterInstances = []
 var currentUser = ''
-
 var msgColor = 'black'
-
 var mainPageWaterInstances = []
 
-//create a blueprint for objects - a schema
 const waterSchema = new mongoose.Schema({
     name: String,
     type: String,
@@ -41,16 +39,13 @@ const waterSchema = new mongoose.Schema({
     owner: String
     //coś w sytlu "mail dodającego - poźniej pola wody będą dopasowywane ze wspólnej kolekcji urzytkownikom po ich mailu"
 })
-//create Class   in     chosen collection
 const Water = mongoose.model("wc1", waterSchema)
 
-//create a blueprint for objects - a schema
 const userSchema = new mongoose.Schema({
     email: String,
     username: String,
     password: String
 })
-//create Class   in     chosen collection
 const User = mongoose.model("uc1", userSchema)
 
 const reviewSchema = new mongoose.Schema({
@@ -64,9 +59,7 @@ const reviewSchema = new mongoose.Schema({
         BD: Number
     }
 })
-
 const Review = mongoose.model("rc1", reviewSchema)
-
 
 app.post("/addInstance", (req, res) => {
     console.log(req.body);
@@ -82,11 +75,22 @@ app.post("/addInstance", (req, res) => {
             BD: req.body.BD
         },
         owner: currentUser
-
     })
     allWaterInstances.push(WaterInstanceInDB)
     WaterInstanceInDB.save();// umieść w podanej kolekcji
     res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+})
+
+app.post("/putInstanceOnMainPage", (req,res)=>{
+    console.log(req.body.instance_id);
+    Water.updateOne({ "_id": req.body.instance_id },{owner:'none'}, (err)=>{
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('powodzenie, doszło do zmiany ownera dla '+ req.body.instance_id);
+            redirect("/")
+        }
+    })
 })
 
 app.post("/addReview", (req, res) => {
@@ -126,7 +130,6 @@ app.post("/viewReviews", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundItems);
             res.render("main", {
                 waterNameInReview: waterNameInReview,
                 waterTypeInReview: waterTypeInReview,
@@ -257,6 +260,7 @@ app.post("/giveOpinion", (req, res) => {
 
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
+    //belonging to main page is dictated by ovner if is none - then it is on main page
     Water.find({ "owner": 'none' }, function (err, foundItems) {
         if (err) {
             console.log(err);
