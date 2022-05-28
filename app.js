@@ -12,6 +12,7 @@ const { response } = require("express")
 //Embeded Java Script - funkcje z dynamicznym HTMLem
 const ejs = require('ejs');
 const { strict } = require("assert")
+const { off } = require("process")
 
 const app = express()
 const portNumber = 3000
@@ -106,13 +107,35 @@ app.post("/addReview", (req, res) => {
 })
 
 app.post("/viewReviews", (req, res) => {
+
+    var waterNameInReview
+    var waterTypeInReview
+    var waterImgInReview
+
+    Water.findOne({ "_id": req.body.instance_id }, (err, foundItem) => {
+        if (err) {
+            console.log(err);
+        } else {
+            waterNameInReview = foundItem.name
+            waterTypeInReview = foundItem.type
+            waterImgInReview = foundItem.imgUrl
+        }
+    })
+
     Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
         if (err) {
             console.log(err);
         } else {
             console.log(foundItems);
-            res.render("ratings", {
-                foundItems: foundItems,
+            res.render("main", {
+                waterNameInReview: waterNameInReview,
+                waterTypeInReview: waterTypeInReview,
+                waterImgInReview: waterImgInReview,
+                usageMode: 'revievView',
+                currentUser: currentUser,
+                iterationNumber: foundItems.length,
+                allWaterInstancesM: foundItems,//for further clarification it's not water but reviews of water
+                msgColor: msgColor,
             })
         }
     })
