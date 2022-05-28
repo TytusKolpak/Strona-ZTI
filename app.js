@@ -20,7 +20,7 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 var allWaterInstances = []
-var currentUser = ' '
+var currentUser = ''
 
 var msgColor = 'black'
 
@@ -52,7 +52,23 @@ const userSchema = new mongoose.Schema({
 //create Class   in     chosen collection
 const User = mongoose.model("uc1", userSchema)
 
-app.post("/add", (req, res) => {
+const reviewSchema = new mongoose.Schema({
+    gradedWaterId: String,
+    grader: String,
+    opinion: String,
+    rating: {
+        IT: Number,
+        TA8H: Number,
+        BQ: Number,
+        BD: Number
+    }
+})
+
+const Review = mongoose.model("rc1", reviewSchema)
+
+
+app.post("/addInstance", (req, res) => {
+    console.log(req.body);
     //create object of that class
     const WaterInstanceInDB = new Water({
         name: req.body.newWaterInstanceName,
@@ -70,6 +86,36 @@ app.post("/add", (req, res) => {
     allWaterInstances.push(WaterInstanceInDB)
     WaterInstanceInDB.save();// umieść w podanej kolekcji
     res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+})
+
+app.post("/addReview", (req, res) => {
+    console.log(req.body);
+    const ReviewInDB = new Review({
+        gradedWaterId: req.body._id,
+        grader: currentUser,
+        opinion: req.body.writtenOpinion,
+        rating: {
+            IT: req.body.IT,
+            TA8H: req.body.TA8H,
+            BQ: req.body.BQ,
+            BD: req.body.BD
+        },
+    })
+    ReviewInDB.save()
+    res.redirect("/")
+})
+
+app.post("/viewReviews", (req, res) => {
+    Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(foundItems);
+            res.render("ratings", {
+                foundItems: foundItems,
+            })
+        }
+    })
 })
 
 app.post("/showOrDeleteInstances", (req, res) => {
@@ -166,38 +212,28 @@ app.post("/logInAttempt", (req, res) => {
 })
 
 app.post("/giveOpinion", (req, res) => {
-    Water.updateOne({ "_id": req.body.instance_id }, {
-        $push: {grades: 3 }
-    }, {//options
-        strict: false
-    }
-        , function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Updated: ' + req.body.instance_id);
-            }
-        })
-
-    //trzebaby stworzyć jakiś odpowiednik addera, gdzie można wybrać oceny X/5 i jakiś tekst dopisać ,ale zdjęcie i nazwy są już zadane,
-    //a następnie dodać to do obiektu tej wody o ownerze: none. COś w stylu:
-    //opinion:{
-    // rating:  {
-    //          IT: Number,
-    //          TA8H: Number,
-    //          BQ: Number,
-    //          BD: Number
-    //          },
-    // owner: String
-    // review: String (jako zdanie/zdania)
-    // }
-
-    res.redirect("/")
+    //so we'd need to redirect o adder, with below contents sent
+    //in some way so that this instance will be ranked
+    Water.findOne({ "_id": req.body.instance_id }, (err, foundItem) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("main", {//tak na prawdę do addera, ale tak jest łatwiej
+                instance_id: req.body.instance_id,
+                defaultNameValue: foundItem.name,
+                defaultTypeValue: foundItem.type,
+                defaultImgValue: foundItem.imgUrl,
+                currentUser: currentUser,
+                msgColor: 'black',
+                iterationNumber: 0,
+                usageMode: 'review'
+            })
+        }
+    })
 })
 
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
-
     Water.find({ "owner": 'none' }, function (err, foundItems) {
         if (err) {
             console.log(err);
@@ -205,7 +241,7 @@ app.get("/", (req, res) => {
             mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
 
             res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
-                currentUser: "",
+                currentUser: currentUser,
                 iterationNumber: mainPageWaterInstances.length,
                 allWaterInstancesM: mainPageWaterInstances,
                 msgColor: msgColor
@@ -232,10 +268,14 @@ app.get("/signUp", (req, res) => {
 app.get("/adder", (req, res) => {
     msgColor = 'black'
     res.render("main", {
+        defaultNameValue: '',
+        defaultTypeValue: '',
+        defaultImgValue: '../images/Puste.png',
         currentUser: currentUser,
         iterationNumber: allWaterInstances.length,
         allWaterInstancesM: allWaterInstances,
-        msgColor: msgColor
+        msgColor: msgColor,
+        usageMode: 'adder'
     })
 })
 

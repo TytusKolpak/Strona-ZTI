@@ -75,10 +75,24 @@
                         </table>
                     </td>
                 </table>
-                <form action="giveOpinion" method="post">
-                    
-                    <button type="submit" name="instance_id" value="<%=allWaterInstancesM[index]._id%>">Grade it</button>
-                </form>
+                <table class="mainDiv">
+                    <tr>
+                        <% if (currentUser !== '') {%>
+                        <td>
+                            <form action="giveOpinion" method="post">
+                                <button type="submit" name="instance_id" value="<%=allWaterInstancesM[index]._id%>">Grade it</button>
+                            </form>
+                        </td>
+                        <%}%>
+                        <td>
+                            <form action="viewReviews" method="post">
+                                <button type="submit" name="instance_id" value="<%=allWaterInstancesM[index]._id%>">See
+                                    reviews</button>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+
             </div>
             <%}%>
     </main>
