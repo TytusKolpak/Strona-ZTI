@@ -8,144 +8,82 @@
             </h1>
             <p class="lead fw-normal">To drink, or not to drink?<br>That is the question.</p>
         </div>
-        <!-- każdy kolejny div to kolejna woda -->
-
-        <div class="mainDiv">
-            <!-- Piwniczanka -->
-            <div>
-                <h2 class="display-5">Piwniczanka</h2>
-                <p class="lead">Średnio gazowana</p>
+        <%for (let index=0; index < iterationNumber; index++) {%>
+            <div class="mainDiv">
+                <div>
+                    <h2 class="display-5">
+                        <%= allWaterInstancesM[index].name %>
+                    </h2>
+                    <p class="lead">
+                        <%= allWaterInstancesM[index].type %>
+                    </p>
+                </div>
+                <table>
+                    <td>
+                        <img src="<%= allWaterInstancesM[index].imgUrl %>" alt="Best there is">
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>Initial taste</td>
+                                <td>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.IT; index1++) {%>
+                                        ⚫
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.IT; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Taste after 8h</td>
+                                <td>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.TA8H; index1++) {%>
+                                        ⚫
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2 < 5;
+                                                index2++) {%>
+                                                ⚪
+                                                <%}%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bottle quality</td>
+                                <td>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BQ; index1++) {%>
+                                        ⚫
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bottle design</td>
+                                <td>
+                                    <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BD; index1++) {%>
+                                        ⚫
+                                        <%}%>
+                                            <%for (let index2=allWaterInstancesM[index].rating.BD; index2 < 5; index2++)
+                                                {%>
+                                                ⚪
+                                                <%}%>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </table>
+                <form action="giveOpinion" method="post">
+                    
+                    <button type="submit" name="instance_id" value="<%=allWaterInstancesM[index]._id%>">Grade it</button>
+                </form>
             </div>
-            <table>
-                <td>
-                    <img src="../images\Piwniczanka.png" alt="Best there is">
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Initial taste</td>
-                            <td>⚫⚫⚫⚫⚫</td>
-                        </tr>
-                        <tr>
-                            <td>Taste after 8h</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle quality</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle design</td>
-                            <td>⚫⚫⚫⚪⚪</td>
-                        </tr>
-                    </table>
-                </td>
-            </table>
-        </div>
-
-        <div class="mainDiv">
-            <!-- Muszynianka -->
-            <div class="">
-                <h2 class="display-5">Muszynianka</h2>
-                <p class="lead">Średnio gazowana</p>
-            </div>
-            <table>
-                <td>
-                    <img src="../images\Muszynianka.png">
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Initial taste</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Taste after 8h</td>
-                            <td>⚫⚫⚫⚪⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle quality</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle design</td>
-                            <td>⚫⚫⚫⚪⚪</td>
-                        </tr>
-                    </table>
-                </td>
-            </table>
-        </div>
-
-        <div class="mainDiv">
-            <!-- Nałęczowianka -->
-            <div class="">
-                <h2 class="display-5">Nałęczowianka</h2>
-                <p class="lead">Niegazowana</p>
-            </div>
-            <table>
-                <td>
-                    <img src="../images\Nałęczowianka.png">
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Initial taste</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Taste after 8h</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle quality</td>
-                            <td>⚫⚫⚪⚪⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle design</td>
-                            <td>⚫⚫⚫⚫⚪</td>
-                        </tr>
-                    </table>
-                </td>
-            </table>
-        </div>
-
-        <div class="mainDiv">
-            <!-- Cisowianka -->
-            <div class="">
-                <h2 class="display-5">Cisowianka</h2>
-                <p class="lead">Niegazowana</p>
-            </div>
-            <table>
-                <td>
-                    <img src="..\images\Cisowianka.png">
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Initial taste</td>
-                            <td>⚫⚪⚪⚪⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Taste after 8h</td>
-                            <td>⚫⚪⚪⚪⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle quality</td>
-                            <td>⚫⚫⚫⚪⚪</td>
-                        </tr>
-                        <tr>
-                            <td>Bottle design</td>
-                            <td>⚫⚫⚫⚪⚪</td>
-                        </tr>
-                    </table>
-                </td>
-            </table>
-        </div>
-        <!-- zmien klase div na to co ma m-3 btn itd, to nie trzeba będzie się bawic za kazdym razem -->
-
-
-
+            <%}%>
     </main>
-</body>
 
-</html>
+    <%- include("message") -%>
+        </body>
+
+        </html>

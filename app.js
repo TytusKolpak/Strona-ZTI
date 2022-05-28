@@ -11,6 +11,7 @@ const { options } = require("request")
 const { response } = require("express")
 //Embeded Java Script - funkcje z dynamicznym HTMLem
 const ejs = require('ejs');
+const { strict } = require("assert")
 
 const app = express()
 const portNumber = 3000
@@ -20,7 +21,10 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 var allWaterInstances = []
 var currentUser = ' '
+
 var msgColor = 'black'
+
+var mainPageWaterInstances = []
 
 //create a blueprint for objects - a schema
 const waterSchema = new mongoose.Schema({
@@ -61,13 +65,28 @@ app.post("/add", (req, res) => {
             BD: req.body.BD
         },
         owner: currentUser
+
     })
     allWaterInstances.push(WaterInstanceInDB)
     WaterInstanceInDB.save();// umieść w podanej kolekcji
     res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
 })
 
-app.post("/showInstances", (req, res) => {
+app.post("/showOrDeleteInstances", (req, res) => {
+    //difference is such that no deletion occurs if there is no id specified -
+    //which it isn't when just show my collection is clicked
+    if (req.body.instance_id !== undefined) {
+        Water.deleteOne({ "_id": req.body.instance_id }, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Deleted: " + req.body.instance_id);
+            }
+        })
+    } else {
+        console.log('No id given, just showing all instances');
+    }
+
     Water.find({ "owner": currentUser }, function (err, foundItems) {
         if (err) {
             console.log(err);
@@ -146,13 +165,57 @@ app.post("/logInAttempt", (req, res) => {
     })
 })
 
-//tu się zaczyna po wejściu na stronę
+app.post("/giveOpinion", (req, res) => {
+    Water.updateOne({ "_id": req.body.instance_id }, {
+        $push: {grades: 3 }
+    }, {//options
+        strict: false
+    }
+        , function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Updated: ' + req.body.instance_id);
+            }
+        })
+
+    //trzebaby stworzyć jakiś odpowiednik addera, gdzie można wybrać oceny X/5 i jakiś tekst dopisać ,ale zdjęcie i nazwy są już zadane,
+    //a następnie dodać to do obiektu tej wody o ownerze: none. COś w stylu:
+    //opinion:{
+    // rating:  {
+    //          IT: Number,
+    //          TA8H: Number,
+    //          BQ: Number,
+    //          BD: Number
+    //          },
+    // owner: String
+    // review: String (jako zdanie/zdania)
+    // }
+
+    res.redirect("/")
+})
+
+//tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
-    res.render("mainPage")
+
+    Water.find({ "owner": 'none' }, function (err, foundItems) {
+        if (err) {
+            console.log(err);
+        } else {
+            mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
+
+            res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
+                currentUser: "",
+                iterationNumber: mainPageWaterInstances.length,
+                allWaterInstancesM: mainPageWaterInstances,
+                msgColor: msgColor
+            })
+        }
+    })
 })
 //to obsługuje pozostałe
 app.get("/mainPage", (req, res) => {
-    res.render("mainPage")
+    res.redirect("/")
 })
 app.get("/contact", (req, res) => {
     res.render("contact")

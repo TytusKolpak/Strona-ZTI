@@ -72,6 +72,9 @@
                         </table>
                     </td>
                 </table>
+                <form action="showOrDeleteInstances" method="post">
+                    <button type="submit" name="instance_id" value="<%=allWaterInstancesM[index]._id%>">Delete</button>
+                </form>
             </div>
             <%}%>
     </main>
