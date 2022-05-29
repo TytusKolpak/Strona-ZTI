@@ -1,18 +1,13 @@
 //paczki
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
-// mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
+    // mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 
-//const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://KolpakTytus:767944370123t@cluster0.h9ynn.mongodb.net//WaterDB?retryWrites=true&w=majority"
-//const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
-    const collection = client.db("test").collection("devices");
+    const collection = client.db("WaterDB").collection("uc1");
     // perform actions on the collection object
-    client.close();
 });
 
 const express = require("express")
