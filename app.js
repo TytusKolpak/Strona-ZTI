@@ -1,20 +1,20 @@
 //paczki
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
-//mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 
-const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
-try {
-    // Connect to the MongoDB cluster
-    mongoose.connect(
-        mongoAtlasUri,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        () => console.log(" Mongoose is connected")
-    );
+// const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
+// try {
+//     // Connect to the MongoDB cluster
+//     mongoose.connect(
+//         mongoAtlasUri,
+//         { useNewUrlParser: true, useUnifiedTopology: true },
+//         () => console.log(" Mongoose is connected")
+//     );
 
-} catch (e) {
-    console.log("could not connect");
-}
+// } catch (e) {
+//     console.log("could not connect");
+// }
 
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -148,22 +148,21 @@ app.post("/viewReviews", (req, res) => {
             waterNameInReview = foundItem.name
             waterTypeInReview = foundItem.type
             waterImgInReview = foundItem.imgUrl
-        }
-    })
-
-    Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render("main", {
-                waterNameInReview: waterNameInReview,
-                waterTypeInReview: waterTypeInReview,
-                waterImgInReview: waterImgInReview,
-                usageMode: 'revievView',
-                currentUser: currentUser,
-                iterationNumber: foundItems.length,
-                allWaterInstancesM: foundItems,//for further clarification it's not water but reviews of water
-                msgColor: msgColor,
+            Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render("main", {
+                        waterNameInReview: waterNameInReview,
+                        waterTypeInReview: waterTypeInReview,
+                        waterImgInReview: waterImgInReview,
+                        usageMode: 'revievView',
+                        currentUser: currentUser,
+                        iterationNumber: foundItems.length,
+                        allWaterInstancesM: foundItems,//for further clarification it's not water but reviews of water
+                        msgColor: msgColor,
+                    })
+                }
             })
         }
     })
