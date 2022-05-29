@@ -13,7 +13,7 @@ const { response } = require("express")
 const ejs = require('ejs');
 const { strict } = require("assert")
 const { off } = require("process")
-const { redirect } = require("express/lib/response")
+const { redirect, render } = require("express/lib/response")
 
 const app = express()
 const portNumber = 3000
@@ -81,14 +81,15 @@ app.post("/addInstance", (req, res) => {
     res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
 })
 
-app.post("/putInstanceOnMainPage", (req,res)=>{
-    console.log(req.body.instance_id);
-    Water.updateOne({ "_id": req.body.instance_id },{owner:'none'}, (err)=>{
+app.post("/putInstanceOnMainPage", (req, res) => {
+    console.log(req.body);
+    Water.updateOne({ "_id": req.body.instance_id }, { owner: 'none' }, (err) => {
         if (err) {
             console.log(err);
         } else {
-            console.log('powodzenie, doszło do zmiany ownera dla '+ req.body.instance_id);
-            redirect("/")
+            console.log('powodzenie, doszło do zmiany ownera dla ' + req.body.instance_id);
+            // render("/mainPage")
+            res.redirect("/")//to jest zle
         }
     })
 })
@@ -280,9 +281,6 @@ app.get("/", (req, res) => {
 app.get("/mainPage", (req, res) => {
     res.redirect("/")
 })
-app.get("/contact", (req, res) => {
-    res.render("contact")
-})
 app.get("/logIn", (req, res) => {
     res.render("logIn", {
         currentUser: currentUser,
@@ -292,7 +290,15 @@ app.get("/logIn", (req, res) => {
 app.get("/signUp", (req, res) => {
     res.render("signUp")
 })
-app.get("/adder", (req, res) => {
+app.get("/adder", (req, res) => {//trzeba zreloadować baze
+    Water.find({ "owner": currentUser }, function (err, foundItems) {
+        if (err) {
+            console.log(err);
+        } else {
+            allWaterInstances = foundItems
+            //wczytaj do lokalnego arraya pozycje z kolekcji wody wc1 oznaczonej jako model Water
+        }
+    })
     msgColor = 'black'
     res.render("main", {
         defaultNameValue: '',

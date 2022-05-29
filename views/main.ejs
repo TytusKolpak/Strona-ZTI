@@ -1,10 +1,31 @@
 <%- include("header") -%>
     <main>
-        <!-- button/adder -->
         <% if(usageMode !=='revievView' ){ %>
             <div class="mainDivX">
                 <%- include("adder") -%>
             </div>
+            <% if(usageMode === 'adder') {%> 
+                <div class="mainDivX">
+                    <div class="mainDiv">
+                        <table>
+                            <tr>
+                                <td>
+                                    <form action="/resetAdder" method="post">
+                                        <button type="submit">Delete my collection</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/showOrDeleteInstances" method="post">
+                                        <button type="submit">Show my current collection</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+            <hr>
+            <% } %> 
             <% }else{%>
                 <div class="center">
                     <h2 class="display-5">
@@ -41,7 +62,7 @@
                         margin-right: auto;">
                                 <% if(usageMode !=='revievView' ){ %>
                                     <td>
-                                        <img src="<%= allWaterInstancesM[index].imgUrl %>" alt="Best there is">
+                                        <img src="<%= allWaterInstancesM[index].imgUrl %>">
                                     </td>
                                     <% } %>
                                         <td>
@@ -103,14 +124,23 @@
                             </table>
 
                             <% if(usageMode !=='revievView' ){ %>
-                                <form action="showOrDeleteInstances" method="post">
-                                    <button type="submit" name="instance_id"
-                                        value="<%=allWaterInstancesM[index]._id%>">Delete</button>
-                                </form>
-                                <form action="putInstanceOnMainPage" method="post">
-                                    <button type="submit" name="instance_id"
-                                        value="<%=allWaterInstancesM[index]._id%>">Post it</button>
-                                </form>
+
+                                <table class="mainDiv">
+                                    <tr>
+                                        <td>
+                                            <form action="showOrDeleteInstances" method="post">
+                                                <button type="submit" name="instance_id"
+                                                    value="<%=allWaterInstancesM[index]._id%>">Delete</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="putInstanceOnMainPage" method="post">
+                                                <button type="submit" name="instance_id"
+                                                    value="<%=allWaterInstancesM[index]._id%>">Post it</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
                                 <% }else{ %>
                                     <div>
                                         Their opinion:

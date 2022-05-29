@@ -28,7 +28,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <img src="<%= defaultImgValue %>" alt="No img :C">
+                                                <img src="<%= defaultImgValue %>" >
                                             </td>
                                         </tr>
                                         <% if(usageMode==='adder' ){ %>
@@ -81,15 +81,4 @@
                                 <button type="submit" name="_id" value="<%=instance_id %>">Submit review </button>
                                 <%} %>
                 </form>
-</div>
-<div>
-    <!-- Pokaż tylko kied -->
-    <% if(usageMode==='adder' ){ %>
-        <form action="/resetAdder" method="post">
-            <button type="submit">Delete my collection</button>
-        </form>
-        <form action="/showOrDeleteInstances" method="post">
-            <button type="submit">Show my current collection</button>
-        </form>
-        <% } %>
 </div>
