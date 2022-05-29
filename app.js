@@ -3,7 +3,18 @@
 const mongoose = require("mongoose")       //taka baza
 //mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 
-mongoose.connect("mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority", { useNewUrlParser: true })
+const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
+try {
+    // Connect to the MongoDB cluster
+    mongoose.connect(
+        mongoAtlasUri,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        () => console.log(" Mongoose is connected")
+    );
+
+} catch (e) {
+    console.log("could not connect");
+}
 
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -11,7 +22,6 @@ const request = require("request")
 const https = require("https")
 const { options } = require("request")
 const { response } = require("express")
-//Embeded Java Script - funkcje z dynamicznym HTMLem
 const ejs = require('ejs');
 const { strict } = require("assert")
 const { off } = require("process")
