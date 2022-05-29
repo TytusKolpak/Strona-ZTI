@@ -6,7 +6,8 @@ const mongoose = require("mongoose")       //taka baza
 //const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority";
+const uri = "mongodb+srv://KolpakTytus:767944370123t@cluster0.h9ynn.mongodb.net/admin?authSource=admin&replicaSet=atlas-104ckl-shard-0&readPreference=primary&ssl=true"
+//const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
     const collection = client.db("test").collection("devices");
