@@ -1,12 +1,17 @@
 //paczki
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
-    // mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
+    // mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true }
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 client.connect(err => {
-    const collection = client.db("WaterDB").collection("uc1");
+    const uc1 = client.db("WaterDB").collection("uc1");
+    
+    const wc1 = client.db("WaterDB").collection("wc1");
+    
+    const rc1 = client.db("WaterDB").collection("rc1");
     // perform actions on the collection object
 });
 
