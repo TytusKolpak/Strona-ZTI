@@ -31,10 +31,13 @@ const waterSchema = new mongoose.Schema({
     type: String,
     imgUrl: String,
     rating: {
-        IT: Number,
-        TA8H: Number,
-        BQ: Number,
-        BD: Number
+        IT: Number, //initial taste
+        TA8H: Number, //taster after 8h
+        BQ: Number, //bottle quality
+        BD: Number, //bottle design
+        MC: Number, //mineral contert
+        P: Number, //price
+        A: Number, //availability
     },
     owner: String
     //coś w sytlu "mail dodającego - poźniej pola wody będą dopasowywane ze wspólnej kolekcji urzytkownikom po ich mailu"
@@ -56,7 +59,10 @@ const reviewSchema = new mongoose.Schema({
         IT: Number,
         TA8H: Number,
         BQ: Number,
-        BD: Number
+        BD: Number,
+        MC: Number,
+        P: Number,
+        A: Number,
     }
 })
 const Review = mongoose.model("rc1", reviewSchema)
@@ -72,7 +78,10 @@ app.post("/addInstance", (req, res) => {
             IT: req.body.IT,
             TA8H: req.body.TA8H,
             BQ: req.body.BQ,
-            BD: req.body.BD
+            BD: req.body.BD,
+            MC: req.body.MC,
+            P: req.body.P,
+            A: req.body.A
         },
         owner: currentUser
     })
@@ -104,7 +113,10 @@ app.post("/addReview", (req, res) => {
             IT: req.body.IT,
             TA8H: req.body.TA8H,
             BQ: req.body.BQ,
-            BD: req.body.BD
+            BD: req.body.BD,
+            MC: req.body.MC,
+            P: req.body.P,
+            A: req.body.A
         },
     })
     ReviewInDB.save()
@@ -296,19 +308,18 @@ app.get("/adder", (req, res) => {//trzeba zreloadować baze
             console.log(err);
         } else {
             allWaterInstances = foundItems
-            //wczytaj do lokalnego arraya pozycje z kolekcji wody wc1 oznaczonej jako model Water
+            msgColor = 'black'
+            res.render("main", {
+                defaultNameValue: '',
+                defaultTypeValue: '',
+                defaultImgValue: '../images/Puste.png',
+                currentUser: currentUser,
+                iterationNumber: allWaterInstances.length,
+                allWaterInstancesM: allWaterInstances,
+                msgColor: msgColor,
+                usageMode: 'adder'
+            })
         }
-    })
-    msgColor = 'black'
-    res.render("main", {
-        defaultNameValue: '',
-        defaultTypeValue: '',
-        defaultImgValue: '../images/Puste.png',
-        currentUser: currentUser,
-        iterationNumber: allWaterInstances.length,
-        allWaterInstancesM: allWaterInstances,
-        msgColor: msgColor,
-        usageMode: 'adder'
     })
 })
 

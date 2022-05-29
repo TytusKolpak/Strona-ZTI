@@ -23,7 +23,6 @@
                         </table>
                     </div>
                 </div>
-                
             <hr>
             <% } %> 
             <% }else{%>
@@ -114,6 +113,45 @@
                                                             ⚫
                                                             <%}%>
                                                                 <%for (let index2=allWaterInstancesM[index].rating.BD;
+                                                                    index2 < 5; index2++) {%>
+                                                                    ⚪
+                                                                    <%}%>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Mineral content</td>
+                                                    <td>
+                                                        <%for (let index1=0; index1 <
+                                                            allWaterInstancesM[index].rating.MC; index1++) {%>
+                                                            ⚫
+                                                            <%}%>
+                                                                <%for (let index2=allWaterInstancesM[index].rating.MC;
+                                                                    index2 < 5; index2++) {%>
+                                                                    ⚪
+                                                                    <%}%>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Price</td>
+                                                    <td>
+                                                        <%for (let index1=0; index1 <
+                                                            allWaterInstancesM[index].rating.P; index1++) {%>
+                                                            ⚫
+                                                            <%}%>
+                                                                <%for (let index2=allWaterInstancesM[index].rating.P;
+                                                                    index2 < 5; index2++) {%>
+                                                                    ⚪
+                                                                    <%}%>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Availability</td>
+                                                    <td>
+                                                        <%for (let index1=0; index1 <
+                                                            allWaterInstancesM[index].rating.A; index1++) {%>
+                                                            ⚫
+                                                            <%}%>
+                                                                <%for (let index2=allWaterInstancesM[index].rating.A;
                                                                     index2 < 5; index2++) {%>
                                                                     ⚪
                                                                     <%}%>
