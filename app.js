@@ -1,19 +1,8 @@
 //paczki
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
-    // mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true }
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-    const uc1 = client.db("WaterDB").collection("uc1");
-    
-    const wc1 = client.db("WaterDB").collection("wc1");
-    
-    const rc1 = client.db("WaterDB").collection("rc1");
-    // perform actions on the collection object
-});
+//mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
+mongoose.connect('mongodb://Tytus:767944370123@nkwrl.mongodb.net:27017/WaterDB?authSource=admin', { useNewUrlParser: true })
 
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -284,23 +273,21 @@ app.post("/giveOpinion", (req, res) => {
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
 
-    res.render("signUp")//test - tak heroku wchodzi na stronę, ale jak jest jakieś query to potrzebuje za dużo czasu i się robi timeout
+    //belonging to main page is dictated by ovner if is none - then it is on main page
+    Water.find({ "owner": 'none' }, function (err, foundItems) {
+        if (err) {
+            console.log(err);
+        } else {
+            mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
 
-    // //belonging to main page is dictated by ovner if is none - then it is on main page
-    // Water.find({ "owner": 'none' }, function (err, foundItems) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
-
-    //         res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
-    //             currentUser: currentUser,
-    //             iterationNumber: mainPageWaterInstances.length,
-    //             allWaterInstancesM: mainPageWaterInstances,
-    //             msgColor: msgColor
-    //         })
-    //     }
-    // })
+            res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
+                currentUser: currentUser,
+                iterationNumber: mainPageWaterInstances.length,
+                allWaterInstancesM: mainPageWaterInstances,
+                msgColor: msgColor
+            })
+        }
+    })
 })
 //to obsługuje pozostałe
 app.get("/mainPage", (req, res) => {
