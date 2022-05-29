@@ -284,21 +284,24 @@ app.post("/giveOpinion", (req, res) => {
 
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
-    //belonging to main page is dictated by ovner if is none - then it is on main page
-    Water.find({ "owner": 'none' }, function (err, foundItems) {
-        if (err) {
-            console.log(err);
-        } else {
-            mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
+    
+    res.render("signUp")//test
+    
+    // //belonging to main page is dictated by ovner if is none - then it is on main page
+    // Water.find({ "owner": 'none' }, function (err, foundItems) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
 
-            res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
-                currentUser: currentUser,
-                iterationNumber: mainPageWaterInstances.length,
-                allWaterInstancesM: mainPageWaterInstances,
-                msgColor: msgColor
-            })
-        }
-    })
+    //         res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
+    //             currentUser: currentUser,
+    //             iterationNumber: mainPageWaterInstances.length,
+    //             allWaterInstancesM: mainPageWaterInstances,
+    //             msgColor: msgColor
+    //         })
+    //     }
+    // })
 })
 //to obsługuje pozostałe
 app.get("/mainPage", (req, res) => {
