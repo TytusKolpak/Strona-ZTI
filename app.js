@@ -3,18 +3,16 @@
 const mongoose = require("mongoose")       //taka baza
 // mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 
-const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
-try {
-    // Connect to the MongoDB cluster
-    mongoose.connect(
-        mongoAtlasUri,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        () => console.log(" Mongoose is connected")
-    );
+//const mongoAtlasUri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority"
 
-} catch (e) {
-    console.log("could not connect");
-}
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+    const collection = client.db("test").collection("devices");
+    // perform actions on the collection object
+    client.close();
+});
 
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -284,9 +282,9 @@ app.post("/giveOpinion", (req, res) => {
 
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
-    
-    res.render("signUp")//test
-    
+
+    res.render("signUp")//test - tak heroku wchodzi na stronę, ale jak jest jakieś query to potrzebuje za dużo czasu i się robi timeout
+
     // //belonging to main page is dictated by ovner if is none - then it is on main page
     // Water.find({ "owner": 'none' }, function (err, foundItems) {
     //     if (err) {
