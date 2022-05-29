@@ -2,7 +2,7 @@
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
 //mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
-mongoose.connect('mongodb://Tytus:767944370123@nkwrl.mongodb.net:27017/WaterDB?authSource=admin', { useNewUrlParser: true })
+mongoose.connect('mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB')
 
 const express = require("express")
 const bodyParser = require("body-parser")
