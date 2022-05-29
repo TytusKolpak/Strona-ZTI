@@ -3,7 +3,7 @@
 const mongoose = require("mongoose")       //taka baza
 //mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 
-mongoose.connect("mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true })
+mongoose.connect("mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB?retryWrites=true&w=majority", { useNewUrlParser: true })
 
 const express = require("express")
 const bodyParser = require("body-parser")
