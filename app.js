@@ -252,6 +252,16 @@ app.post("/logInAttempt", (req, res) => {
     })
 })
 
+app.post("/logOut", (req, res) => {
+    currentUser = ''
+    myResponse = ''
+    msgColor = 'black'
+    res.render("logIn", {
+        currentUser: myResponse,
+        msgColor: msgColor
+    })
+})
+
 app.post("/giveOpinion", (req, res) => {
     //so we'd need to redirect o adder, with below contents sent
     //in some way so that this instance will be ranked
