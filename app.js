@@ -7,7 +7,8 @@ const mongoose = require("mongoose")       //taka baza
 //mongoose.connect('mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB')
 
 
-mongoose.connect("mongodb+srv://admin-Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB", { useNewUrlParser: true })
+mongoose.connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_CLUSTER + "/" + process.env.MONGO_DB, { useNewUrlParser: true })
+
 
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -61,7 +62,7 @@ const userSchema = new mongoose.Schema({
 
 
 //encryption related
-userSchema.plugin(encrypt, {secret:process.env.SECRET, encryptedFields: ['password']})
+userSchema.plugin(encrypt, { secret: process.env.SECRET, encryptedFields: ['password'] })
 //when adressing .env variable you can use both uppercase and lowercase, regardless of it's original form,
 //if there are variables SHOE and shoe in .env, adressing it as SHOE and shoe will return the value of the
 //earlier declared one for both calls ¯\_(ツ)_/¯
