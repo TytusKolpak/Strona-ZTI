@@ -1,3 +1,5 @@
+//important for this config to be as early as posible
+require('dotenv').config()
 //paczki
 //Baza danych mongoDB
 const mongoose = require("mongoose")       //taka baza
@@ -17,9 +19,12 @@ const ejs = require('ejs');
 const { strict } = require("assert")
 const { off } = require("process")
 const { redirect, render } = require("express/lib/response")
+const encrypt = require("mongoose-encryption")
 
 const app = express()
 const portNumber = 3000
+
+
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"))
@@ -28,6 +33,7 @@ var allWaterInstances = []
 var currentUser = ''
 var msgColor = 'black'
 var mainPageWaterInstances = []
+
 
 const waterSchema = new mongoose.Schema({
     name: String,
@@ -52,6 +58,13 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String
 })
+
+
+//encryption related
+userSchema.plugin(encrypt, {secret:process.env.SECRET, encryptedFields: ['password']})
+//when adressing .env variable you can use both uppercase and lowercase, regardless of it's original form,
+//if there are variables SHOE and shoe in .env, adressing it as SHOE and shoe will return the value of the
+//earlier declared one for both calls ¯\_(ツ)_/¯
 const User = mongoose.model("uc1", userSchema)
 
 const reviewSchema = new mongoose.Schema({

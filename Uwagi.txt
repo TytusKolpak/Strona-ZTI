@@ -1,0 +1,1 @@
+Zmiana trybu zapisu hasła uniemożliwiła zalogowanie na konta z czasu bez szyfrowania
