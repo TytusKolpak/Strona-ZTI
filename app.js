@@ -6,10 +6,6 @@ const mongoose = require("mongoose")       //taka baza
 //mongoose.connect("mongodb://localhost:27017/WaterDB", { useNewUrlParser: true })
 //mongoose.connect('mongodb+srv://Tytus:767944370123@cluster0.nkwrl.mongodb.net/WaterDB')
 
-
-mongoose.connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_CLUSTER + "/" + process.env.MONGO_DB, { useNewUrlParser: true })
-
-
 const express = require("express")
 const bodyParser = require("body-parser")
 const request = require("request")
@@ -20,21 +16,32 @@ const ejs = require('ejs');
 const { strict } = require("assert")
 const { off } = require("process")
 const { redirect, render } = require("express/lib/response")
-const encrypt = require("mongoose-encryption")
+const session = require('express-session')
+const passport = require('passport')
+const passportLocalMongoose = require('passport-local-mongoose')
 
 const app = express()
 const portNumber = 3000
 
-
-
 app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(session({
+    secret: "papierz też pierdzi",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+mongoose.connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_CLUSTER + "/" + process.env.MONGO_DB, { useNewUrlParser: true })
+
 var allWaterInstances = []
 var currentUser = ''
 var msgColor = 'black'
 var mainPageWaterInstances = []
-
 
 const waterSchema = new mongoose.Schema({
     name: String,
@@ -60,13 +67,13 @@ const userSchema = new mongoose.Schema({
     password: String
 })
 
+userSchema.plugin(passportLocalMongoose)
 
-//encryption related
-userSchema.plugin(encrypt, { secret: process.env.SECRET, encryptedFields: ['password'] })
-//when adressing .env variable you can use both uppercase and lowercase, regardless of it's original form,
-//if there are variables SHOE and shoe in .env, adressing it as SHOE and shoe will return the value of the
-//earlier declared one for both calls ¯\_(ツ)_/¯
 const User = mongoose.model("uc1", userSchema)
+
+passport.use(User.createStrategy())
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 const reviewSchema = new mongoose.Schema({
     gradedWaterId: String,
@@ -85,6 +92,7 @@ const reviewSchema = new mongoose.Schema({
 const Review = mongoose.model("rc1", reviewSchema)
 
 app.post("/addInstance", (req, res) => {
+    console.log("Added:");
     console.log(req.body);
     //create object of that class
     const WaterInstanceInDB = new Water({
@@ -214,65 +222,41 @@ app.post("/resetAdder", (req, res) => {
 })
 
 app.post("/signUpAttempt", (req, res) => {
-
-    //when someone tries to create an account with a taken name it should turn back error taken name
-    User.findOne({ "username": req.body.username }, function (err, foundItem) {
+    User.register({ username: req.body.username }, req.body.password, function (err, user) {
         if (err) {
             console.log(err);
+            res.sendFile(__dirname + "/public/html/signUpFail.html")
         } else {
-            if (foundItem !== null) {//if already exists
-                res.sendFile(__dirname + "/public/html/signUpFail.html")
-            } else {
-                //create object of that class
-                const UserInstanceInDB = new User({
-                    email: req.body.email,
-                    username: req.body.username,
-                    password: req.body.password
-                })
-                UserInstanceInDB.save();// and save it in database
+            passport.authenticate("local")(req, res, function () {
                 res.sendFile(__dirname + "/public/html/signUpSucces.html")
-            }
+            })
         }
     })
 })
 
 app.post("/logInAttempt", (req, res) => {
+    const user = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+    })
 
-    User.findOne({ "username": req.body.username }, function (err, foundItem) {
-        var myResponse = 'ok'
+    req.login(user, function (err) {
         if (err) {
             console.log(err);
         } else {
-            if (foundItem !== null) {
-                if (foundItem.password === req.body.password) {
-                    currentUser = foundItem.username
-                    myResponse = currentUser
-                    allWaterInstances = []
-                    msgColor = 'black'
-                } else {
-                    msgColor = 'red'
-                    myResponse = 'Invalid password'
-                }
-            } else {
-                msgColor = 'red'
-                myResponse = 'There is no such user'
-            }
+            passport.authenticate("local")(req,res, function(){
+                usageMode = "adder"
+                defaultImgValue = '../images/Puste.png' // to jest do zmiany, bo coś CSS całkiem znika teraz, więc trzeba to obejść
+                res.redirect("/adder")
+            })
         }
-
-        res.render("logIn", {
-            currentUser: myResponse,
-            msgColor: msgColor
-        })
     })
 })
 
 app.post("/logOut", (req, res) => {
-    currentUser = ''
-    myResponse = ''
-    msgColor = 'black'
-    res.render("logIn", {
-        currentUser: myResponse,
-        msgColor: msgColor
+    req.logout(()=>{
+        res.redirect("/")
     })
 })
 
@@ -329,25 +313,12 @@ app.get("/logIn", (req, res) => {
 app.get("/signUp", (req, res) => {
     res.render("signUp")
 })
-app.get("/adder", (req, res) => {//trzeba zreloadować baze
-    Water.find({ "owner": currentUser }, function (err, foundItems) {
-        if (err) {
-            console.log(err);
-        } else {
-            allWaterInstances = foundItems
-            msgColor = 'black'
-            res.render("main", {
-                defaultNameValue: '',
-                defaultTypeValue: '',
-                defaultImgValue: '../images/Puste.png',
-                currentUser: currentUser,
-                iterationNumber: allWaterInstances.length,
-                allWaterInstancesM: allWaterInstances,
-                msgColor: msgColor,
-                usageMode: 'adder'
-            })
-        }
-    })
+app.get("/adder", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("adder")
+    } else {
+        res.redirect("/logIn")
+    }
 })
 
 app.listen(process.env.PORT || portNumber, () => {

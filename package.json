@@ -12,15 +12,21 @@
     "node": "16.14.2"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.17.3",
+    "express-session": "^1.17.3",
     "jquery": "^3.6.0",
     "jsdom": "^19.0.0",
+    "md5": "^2.3.0",
     "mongoose": "^6.3.4",
     "mongoose-encryption": "^2.1.2",
     "nodemon": "^2.0.16",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^7.1.2",
     "request": "^2.88.2"
   }
 }
