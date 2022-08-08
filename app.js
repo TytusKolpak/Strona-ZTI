@@ -1,3 +1,6 @@
+// separate adder from revievs and find out how to log out current user
+
+
 //important for this config to be as early as posible
 require('dotenv').config()
 //paczki
@@ -28,10 +31,12 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(session({
-    secret: "papierz też pierdzi",
+    secret: "ff",
     resave: false,
     saveUninitialized: false
 }))
+
+var username = 'jeszcze nie ustalone' //test
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -165,7 +170,7 @@ app.post("/viewReviews", (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render("main", {
+                    res.render("adder", {
                         waterNameInReview: waterNameInReview,
                         waterTypeInReview: waterTypeInReview,
                         waterImgInReview: waterImgInReview,
@@ -245,8 +250,11 @@ app.post("/logInAttempt", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            passport.authenticate("local")(req,res, function(){
+            passport.authenticate("local")(req, res, function () {
+                console.log(user);
+                console.log(user.username);
                 usageMode = "adder"
+                currentUser = req.body.username
                 defaultImgValue = '../images/Puste.png' // to jest do zmiany, bo coś CSS całkiem znika teraz, więc trzeba to obejść
                 res.redirect("/adder")
             })
@@ -255,9 +263,10 @@ app.post("/logInAttempt", (req, res) => {
 })
 
 app.post("/logOut", (req, res) => {
-    req.logout(()=>{
-        res.redirect("/")
-    })
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 })
 
 app.post("/giveOpinion", (req, res) => {
@@ -267,7 +276,7 @@ app.post("/giveOpinion", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("main", {//tak na prawdę do addera, ale tak jest łatwiej
+            res.render("adder", {//tak na prawdę do addera, ale tak jest łatwiej
                 instance_id: req.body.instance_id,
                 defaultNameValue: foundItem.name,
                 defaultTypeValue: foundItem.type,
@@ -283,7 +292,7 @@ app.post("/giveOpinion", (req, res) => {
 
 //tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
 app.get("/", (req, res) => {
-
+    user = null
     //belonging to main page is dictated by ovner if is none - then it is on main page
     Water.find({ "owner": 'none' }, function (err, foundItems) {
         if (err) {
@@ -299,6 +308,9 @@ app.get("/", (req, res) => {
             })
         }
     })
+
+    console.log("currentUser variable value: \"" + currentUser + "\"");
+    console.log("user variable value: \"" + user + "\"");
 })
 //to obsługuje pozostałe
 app.get("/mainPage", (req, res) => {
@@ -315,7 +327,12 @@ app.get("/signUp", (req, res) => {
 })
 app.get("/adder", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("adder")
+        res.render("adder", {//tak na prawdę do addera, ale tak jest łatwiej
+            currentUser: currentUser,
+            msgColor: 'black',
+            iterationNumber: 0,
+            usageMode: 'adder'
+        })
     } else {
         res.redirect("/logIn")
     }
