@@ -1,4 +1,4 @@
-<%- include("header") -%>
+<%-include("header",{darkModeEnabled2M:darkModeEnabledM}) -%>
 
     <main>
 
@@ -8,151 +8,138 @@
             </h1>
             <p class="lead fw-normal">To drink, or not to drink?<br>That is the question.</p>
         </div>
-        <%for (let index=0; index < iterationNumber; index++) {%>
-
-            <!-- open every third instance -->
-            <% if (index%3===0){%>
-                <div class="mainDivX">
-                    <%}%>
-                        <div class="mainDiv">
-                            <div>
-                                <h2 class="display-5">
-                                    <%= allWaterInstancesM[index].name %>
-                                </h2>
-                                <p class="lead">
-                                    <%= allWaterInstancesM[index].type %>
-                                </p>
-                            </div>
-                            <table>
-                                <td>
+        <div class="myflex">
+            <%for (let index=0; index < allWaterInstancesM.length; index++) {%>
+                <div class="mainDiv">
+                    <div>
+                        <h2 class="display-5">
+                            <%= allWaterInstancesM[index].name %>
+                        </h2>
+                        <p class="lead">
+                            <%= allWaterInstancesM[index].type %>
+                        </p>
+                    </div>
+                    <table>
+                        <td>
+                            <% if(darkModeEnabledM===true){%> 
+                                <img src="<%= allWaterInstancesM[index].imgUrl %>" class="clearFilter">
+                                <% }else{ %>
                                     <img src="<%= allWaterInstancesM[index].imgUrl %>">
-                                </td>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>Initial taste</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.IT;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.IT; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Taste after 8h</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.TA8H;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2
-                                                            < 5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bottle quality</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BQ;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bottle design</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BD;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.BD; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Mineral content</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.MC;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.MC; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Price</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.P;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.P; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Availability</td>
-                                            <td>
-                                                <%for (let index1=0; index1 < allWaterInstancesM[index].rating.A;
-                                                    index1++) {%>
-                                                    ⚫
-                                                    <%}%>
-                                                        <%for (let index2=allWaterInstancesM[index].rating.A; index2 <
-                                                            5; index2++) {%>
-                                                            ⚪
-                                                            <%}%>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </table>
-                            <table class="mainDiv">
+                                    <% } %>
+                        </td>
+                        <td>
+                            <table>
                                 <tr>
-                                    <% if (currentUser !=='' ) {%>
-                                        <td>
-                                            <form action="giveOpinion" method="post">
-                                                <button type="submit" name="instance_id"
-                                                    value="<%=allWaterInstancesM[index]._id%>">Grade it</button>
-                                            </form>
-                                        </td>
-                                        <%}%>
-                                            <td>
-                                                <form action="viewReviews" method="post">
-                                                    <button type="submit" name="instance_id"
-                                                        value="<%=allWaterInstancesM[index]._id%>">See
-                                                        reviews</button>
-                                                </form>
-                                            </td>
+                                    <td>Initial taste</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.IT; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.IT; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Taste after 8h</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.TA8H; index1++)
+                                            {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bottle quality</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BQ; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bottle design</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BD; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.BD; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Mineral content</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.MC; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.MC; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Price</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.P; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.P; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Availability</td>
+                                    <td>
+                                        <%for (let index1=0; index1 < allWaterInstancesM[index].rating.A; index1++) {%>
+                                            ⚫
+                                            <%}%>
+                                                <%for (let index2=allWaterInstancesM[index].rating.A; index2 < 5;
+                                                    index2++) {%>
+                                                    ⚪
+                                                    <%}%>
+                                    </td>
                                 </tr>
                             </table>
-
-                        </div>
-
-                        <% if (index%3===2){%>
+                        </td>
+                    </table>
+                    <div class="mainDiv">
+                        <%if (allWaterInstancesM[index].owner !=='' ) {%>
+                            submitted by: <%=allWaterInstancesM[index].owner %>
+                                <%}%>
+                                    <form action="viewReviews" method="post">
+                                        <button type="submit" name="instance_id"
+                                            value="<%=allWaterInstancesM[index]._id%>">
+                                            <% if (loggedUserM!=='' ) {%>
+                                                See/add reviews
+                                                <%}else{%>
+                                                    See reviews
+                                                    <%}%>
+                                        </button>
+                                    </form>
+                    </div>
                 </div>
                 <%}%>
-                    <%}%>
+        </div>
+        <form action="dark" method="post">
+            <button type="submit">dark mode</button>
+        </form>
     </main>
+    </body>
 
-    <%- include("message") -%>
-        </body>
-
-        </html>
+    </html>

@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="..\css\bootstrap.css">
-    <link rel="stylesheet" href="..\css\product.css">
-    <title>Water</title>
-</head>
+<!-- not yet working, remove condition and leave <html lang="en"> -->
+<% if(darkModeEnabled2M===true){%> 
+    <html lang="en" class="inverted">
+    <% }else{ %>
+        <html lang="en">
+        <% } %>
 
-<body>
-    <header class="site-header sticky-top py-1 mymy-5">
-        <nav class="container d-flex flex-column flex-md-row justify-content-between">
-            <a class="py-2 d-none d-md-inline-block" href="mainPage">Main page</a>
-            <a class="py-2 d-none d-md-inline-block" href="signUp">Sign up</a>
-            <a class="py-2 d-none d-md-inline-block" href="logIn">Log in</a>
-            <a class="py-2 d-none d-md-inline-block" href="adder">Adder</a>
-        </nav>
-    </header>
+            <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="..\css\bootstrap.css">
+                <link rel="stylesheet" href="..\css\product.css">
+                <title>Water</title>
+            </head>
+
+            <body>
+                <header class="site-header sticky-top py-1 mymy-5">
+                    <nav class="container d-flex flex-column flex-md-row justify-content-between">
+                        <a class="py-2 d-none d-md-inline-block" href="mainPage">Main page</a>
+                        <a class="py-2 d-none d-md-inline-block" href="signUp">Sign up</a>
+                        <a class="py-2 d-none d-md-inline-block" href="logIn">Log in</a>
+                        <a class="py-2 d-none d-md-inline-block" href="adder">Adder</a>
+                    </nav>
+                </header>

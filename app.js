@@ -22,6 +22,7 @@ const { redirect, render } = require("express/lib/response")
 const session = require('express-session')
 const passport = require('passport')
 const passportLocalMongoose = require('passport-local-mongoose')
+const { LOADIPHLPAPI } = require('dns')
 
 const app = express()
 const portNumber = 3000
@@ -30,13 +31,12 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
+//used?
 app.use(session({
     secret: "ff",
     resave: false,
     saveUninitialized: false
 }))
-
-var username = 'jeszcze nie ustalone' //test
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -44,9 +44,10 @@ app.use(passport.session())
 mongoose.connect("mongodb+srv://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_CLUSTER + "/" + process.env.MONGO_DB, { useNewUrlParser: true })
 
 var allWaterInstances = []
-var currentUser = ''
-var msgColor = 'black'
+var loggedUser = ""
 var mainPageWaterInstances = []
+var darkModeEnabled = false
+
 
 const waterSchema = new mongoose.Schema({
     name: String,
@@ -61,7 +62,8 @@ const waterSchema = new mongoose.Schema({
         P: Number, //price
         A: Number, //availability
     },
-    owner: String
+    owner: String,
+    onMainPage: Boolean
     //coś w sytlu "mail dodającego - poźniej pola wody będą dopasowywane ze wspólnej kolekcji urzytkownikom po ich mailu"
 })
 const Water = mongoose.model("wc1", waterSchema)
@@ -97,47 +99,60 @@ const reviewSchema = new mongoose.Schema({
 const Review = mongoose.model("rc1", reviewSchema)
 
 app.post("/addInstance", (req, res) => {
-    console.log("Added:");
-    console.log(req.body);
     //create object of that class
-    const WaterInstanceInDB = new Water({
-        name: req.body.newWaterInstanceName,
-        type: req.body.newWaterInstanceType,
-        imgUrl: req.body.imgUrl,
-        rating: {
-            IT: req.body.IT,
-            TA8H: req.body.TA8H,
-            BQ: req.body.BQ,
-            BD: req.body.BD,
-            MC: req.body.MC,
-            P: req.body.P,
-            A: req.body.A
-        },
-        owner: currentUser
-    })
-    allWaterInstances.push(WaterInstanceInDB)
-    WaterInstanceInDB.save();// umieść w podanej kolekcji
-    res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+    if (req.body.newWaterInstanceName === "" || req.body.newWaterInstanceType === "" || req.body.imgUrl === "") {
+        res.sendFile(__dirname + "/public/html/additionFail.html")
+    } else {
+        const WaterInstanceInDB = new Water({
+            name: req.body.newWaterInstanceName,
+            type: req.body.newWaterInstanceType,
+            imgUrl: req.body.imgUrl,
+            rating: {
+                IT: req.body.IT,
+                TA8H: req.body.TA8H,
+                BQ: req.body.BQ,
+                BD: req.body.BD,
+                MC: req.body.MC,
+                P: req.body.P,
+                A: req.body.A
+            },
+            owner: loggedUser
+        })
+
+        console.log("Added: " + WaterInstanceInDB);
+        allWaterInstances.push(WaterInstanceInDB)
+        WaterInstanceInDB.save();// umieść w podanej kolekcji
+        res.redirect("/adder") //przekieruj do app.get - tam kod kieruje się kiedy urzytkownik prosi o stronę
+    }
+
 })
 
 app.post("/putInstanceOnMainPage", (req, res) => {
-    console.log(req.body);
-    Water.updateOne({ "_id": req.body.instance_id }, { owner: 'none' }, (err) => {
+    Water.updateOne({ "_id": req.body.instance_id }, { onMainPage: true }, (err) => {
         if (err) {
             console.log(err);
         } else {
-            console.log('powodzenie, doszło do zmiany ownera dla ' + req.body.instance_id);
-            // render("/mainPage")
-            res.redirect("/")//to jest zle
+            res.redirect("/")
+        }
+    })
+})
+
+app.post("/takeInstanceFromMainPage", (req, res) => {
+    Water.updateOne({ "_id": req.body.instance_id }, { onMainPage: false }, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/adder")
         }
     })
 })
 
 app.post("/addReview", (req, res) => {
     console.log(req.body);
+    //absolutely no this way xd, you gots to send a guy to a place where he can grade those shits with sliders
     const ReviewInDB = new Review({
-        gradedWaterId: req.body._id,
-        grader: currentUser,
+        gradedWaterId: req.body.instance_id,
+        grader: loggedUser,
         opinion: req.body.writtenOpinion,
         rating: {
             IT: req.body.IT,
@@ -150,35 +165,49 @@ app.post("/addReview", (req, res) => {
         },
     })
     ReviewInDB.save()
-    res.redirect("/")
-})
-
-app.post("/viewReviews", (req, res) => {
-
-    var waterNameInReview
-    var waterTypeInReview
-    var waterImgInReview
 
     Water.findOne({ "_id": req.body.instance_id }, (err, foundItem) => {
         if (err) {
             console.log(err);
         } else {
-            waterNameInReview = foundItem.name
-            waterTypeInReview = foundItem.type
-            waterImgInReview = foundItem.imgUrl
             Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.render("adder", {
-                        waterNameInReview: waterNameInReview,
-                        waterTypeInReview: waterTypeInReview,
-                        waterImgInReview: waterImgInReview,
-                        usageMode: 'revievView',
-                        currentUser: currentUser,
+                    res.render("reviewer", {
+                        NameM: foundItem.name,
+                        TypeM: foundItem.type,
+                        ImageM: foundItem.imgUrl,
                         iterationNumber: foundItems.length,
-                        allWaterInstancesM: foundItems,//for further clarification it's not water but reviews of water
-                        msgColor: msgColor,
+                        allReviewInstancesM: foundItems,
+                        loggedUserM: loggedUser,
+                        instance_idM: foundItem._id,
+                        darkModeEnabledM: darkModeEnabled,
+                    })
+                }
+            })
+        }
+    })
+})
+
+app.post("/viewReviews", (req, res) => {
+    Water.findOne({ "_id": req.body.instance_id }, (err, foundItem) => {
+        if (err) {
+            console.log(err);
+        } else {
+            Review.find({ "gradedWaterId": req.body.instance_id }, (err, foundItems) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render("reviewer", {
+                        NameM: foundItem.name,
+                        TypeM: foundItem.type,
+                        ImageM: foundItem.imgUrl,
+                        iterationNumber: foundItems.length,
+                        allReviewInstancesM: foundItems,
+                        loggedUserM: loggedUser,
+                        instance_idM: foundItem._id,
+                        darkModeEnabledM: darkModeEnabled,
                     })
                 }
             })
@@ -201,7 +230,7 @@ app.post("/showOrDeleteInstances", (req, res) => {
         console.log('No id given, just showing all instances');
     }
 
-    Water.find({ "owner": currentUser }, function (err, foundItems) {
+    Water.find({ "owner": loggedUser }, function (err, foundItems) {
         if (err) {
             console.log(err);
         } else {
@@ -209,20 +238,6 @@ app.post("/showOrDeleteInstances", (req, res) => {
             //wczytaj do lokalnego arraya pozycje z kolekcji wody wc1 oznaczonej jako model Water
         }
     })
-    res.redirect("/adder")
-})
-
-app.post("/resetAdder", (req, res) => {
-    //każda ma 5 lub mniej, czyli delete all
-    //później trzba będzie dodać waruenk tego kto jest właścicielem
-    Water.deleteMany({ "owner": currentUser }, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            allWaterInstances = []
-        }
-    })
-
     res.redirect("/adder")
 })
 
@@ -240,33 +255,32 @@ app.post("/signUpAttempt", (req, res) => {
 })
 
 app.post("/logInAttempt", (req, res) => {
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-    })
 
-    req.login(user, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            passport.authenticate("local")(req, res, function () {
-                console.log(user);
-                console.log(user.username);
-                usageMode = "adder"
-                currentUser = req.body.username
-                defaultImgValue = '../images/Puste.png' // to jest do zmiany, bo coś CSS całkiem znika teraz, więc trzeba to obejść
-                res.redirect("/adder")
-            })
-        }
-    })
-})
+    if (loggedUser === "") {
+        const user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        })
+        req.login(user, function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                passport.authenticate("local")(req, res, function () {
+                    loggedUser = req.body.username
+                    res.redirect('/adder');
+                    console.log("Logged user: \"" + loggedUser + "\"");
+                })
+            }
+        })
+    } else {
+        req.logout(function (err) {
+            if (err) { return next(err); }
+            res.redirect('/');
+            loggedUser = ""
+        });
+    }
 
-app.post("/logOut", (req, res) => {
-    req.logout(function (err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-    });
 })
 
 app.post("/giveOpinion", (req, res) => {
@@ -276,62 +290,74 @@ app.post("/giveOpinion", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("adder", {//tak na prawdę do addera, ale tak jest łatwiej
-                instance_id: req.body.instance_id,
-                defaultNameValue: foundItem.name,
-                defaultTypeValue: foundItem.type,
-                defaultImgValue: foundItem.imgUrl,
-                currentUser: currentUser,
-                msgColor: 'black',
-                iterationNumber: 0,
-                usageMode: 'review'
+            res.render("reviewer", {
+                //instance_id: req.body.instance_id,
+                NameM: foundItem.name,
+                TypeM: foundItem.type,
+                ImageM: foundItem.imgUrl,
+                darkModeEnabledM: darkModeEnabled,
             })
         }
     })
 })
 
-//tu się zaczyna po wejściu na stronę (działa dobrze ale trzeba przeładować - bo najpierw renderuje a potem dodaje)
+app.post("/passwordRegeneration", (req,res) => {
+    res.render("regenerate",{
+        destinationEmail : req.body.email,
+        darkModeEnabledM: darkModeEnabled,
+    })
+})
+
+app.post("/dark", (req,res) =>{
+    darkModeEnabled = !darkModeEnabled
+    res.redirect("/mainPage")
+})
+
 app.get("/", (req, res) => {
-    user = null
-    //belonging to main page is dictated by ovner if is none - then it is on main page
-    Water.find({ "owner": 'none' }, function (err, foundItems) {
+    res.redirect("/mainPage")
+})
+
+app.get("/mainPage", (req, res) => {
+    Water.find({ "onMainPage": true }, function (err, foundItems) {
         if (err) {
             console.log(err);
         } else {
-            mainPageWaterInstances = foundItems//przypisz odpowiednie do strony głównej
-
-            res.render("mainPage", { //wypisz te specjalne z userem none na strone główną
-                currentUser: currentUser,
-                iterationNumber: mainPageWaterInstances.length,
+            mainPageWaterInstances = foundItems
+            res.render("mainPage", {
                 allWaterInstancesM: mainPageWaterInstances,
-                msgColor: msgColor
+                loggedUserM: loggedUser,
+                darkModeEnabledM: darkModeEnabled,
             })
         }
     })
+})
 
-    console.log("currentUser variable value: \"" + currentUser + "\"");
-    console.log("user variable value: \"" + user + "\"");
-})
-//to obsługuje pozostałe
-app.get("/mainPage", (req, res) => {
-    res.redirect("/")
-})
 app.get("/logIn", (req, res) => {
     res.render("logIn", {
-        currentUser: currentUser,
-        msgColor: msgColor
+        loggedUserM: loggedUser,
+        darkModeEnabledM: darkModeEnabled,
     })
 })
+
 app.get("/signUp", (req, res) => {
-    res.render("signUp")
+    res.render("signUp",{
+        darkModeEnabledM: darkModeEnabled,
+    })
 })
+
 app.get("/adder", (req, res) => {
-    if (req.isAuthenticated()) {
-        res.render("adder", {//tak na prawdę do addera, ale tak jest łatwiej
-            currentUser: currentUser,
-            msgColor: 'black',
-            iterationNumber: 0,
-            usageMode: 'adder'
+    if (req.isAuthenticated() && loggedUser !== "") {
+        //prepare by recolllecting all of the user's water instances
+        Water.find({ "owner": loggedUser }, function (err, foundItems) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render("adder", {
+                    loggedUserM: loggedUser,
+                    allWaterInstancesM: foundItems,
+                    darkModeEnabledM: darkModeEnabled,
+                })
+            }
         })
     } else {
         res.redirect("/logIn")

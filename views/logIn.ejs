@@ -1,10 +1,10 @@
-<%- include("header") -%>
-    <main class="form-signin center">
+<%-include("header",{darkModeEnabled2M:darkModeEnabledM}) -%>
+    <main class="form-signin center fithw">
         <form action="/logInAttempt" method="post">
             <img class="mb-4 form-floating center" src="../images/Puste.png" alt="" width="72" height="57">
 
             <div class="form-floating">
-                <input name="username" type="text" class="form-control top" id="floatingInput" placeholder="Username">
+                <input name="username" type="text" class="form-control top" placeholder="Username">
                 <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating">
@@ -12,22 +12,24 @@
                     placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
-
-            <!-- <div class="checkbox mb-3">
-                <label class="center">
-                    <input type="checkbox" value="remember-me"> Zapamiętaj mnie
-                </label>
-            </div> -->
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
+            <% if(loggedUserM==="" ) {%>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
+                <% }else{%>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Log out</button>
+                    <% } %>
         </form>
-        <br>
-        <br>
-        <form action="/logOut" method="post">
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Log out</button>
-        </form>
+<!-- 
+        <br><br><br>
+        <p>Forgot password? <br> We will send you a link to create new one.</p>
+        <form action="passwordRegeneration" method="post">
+            <div class="form-floating">
+                <input name="email" type="email" class="form-control special" id="floatingEmail"
+                    placeholder="Email">
+                <label for="floatingEmail">Email</label>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Go</button>
+            </div>
+        </form> -->
     </main>
+    </body>
 
-    <%- include("message") -%>
-        </body>
-
-        </html>
+    </html>

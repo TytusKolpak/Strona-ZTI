@@ -1,191 +1,160 @@
-<%- include("header") -%>
-    <main>
-        <% if(usageMode !=='revievView' ){ %>
-            <div class="mainDivX">
-                <%- include("adderCore") -%>
-            </div>
-            <% if(usageMode === 'adder') {%> 
-                <div class="mainDivX">
+<%-include("header",{darkModeEnabled2M:darkModeEnabledM}) -%>
+    <main class="fithw">
+        <div class="myflex">
+            <h5>
+                <%= loggedUserM %>
+            </h5>
+        </div>
+        <div class="myflex">
+            <%- include("adderCore") -%>
+        </div>
+        <hr>
+        <% if( allWaterInstancesM.length===0){%>
+            <br><br><br>
+            <h1 class="myflex">You have no instances yet</h1>
+            <% } %>
+
+                <%for (let index=0; index < allWaterInstancesM.length; index++) {%>
                     <div class="mainDiv">
-                        <table>
+
+                        <h2 class="display-5">
+                            <%= allWaterInstancesM[index].name %>
+                        </h2>
+                        <p class="lead">
+                            <%= allWaterInstancesM[index].type %>
+                        </p>
+                        <table style=" margin-left: auto;  margin-right: auto;">
+                            <td>
+                                <% if(darkModeEnabledM===true){%> 
+                                    <img src="<%= allWaterInstancesM[index].imgUrl %>" class="clearFilter">
+                                    <% }else{ %>
+                                        <img src="<%= allWaterInstancesM[index].imgUrl %>">
+                                        <% } %>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Initial taste</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.IT; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.IT; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Taste after 8h</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.TA8H;
+                                                index1++) {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.TA8H; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bottle quality</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BQ; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.BQ; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bottle design</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.BD; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.BD; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mineral content</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.MC; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.MC; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Price</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.P; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.P; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Availability</td>
+                                        <td>
+                                            <%for (let index1=0; index1 < allWaterInstancesM[index].rating.A; index1++)
+                                                {%>
+                                                ⚫
+                                                <%}%>
+                                                    <%for (let index2=allWaterInstancesM[index].rating.A; index2 < 5;
+                                                        index2++) {%>
+                                                        ⚪
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </table>
+                        <table class="mainDiv">
                             <tr>
                                 <td>
-                                    <form action="/resetAdder" method="post">
-                                        <button type="submit">Delete my collection</button>
+                                    <form action="showOrDeleteInstances" method="post">
+                                        <button type="submit" name="instance_id"
+                                            value="<%=allWaterInstancesM[index]._id%>">Delete it</button>
                                     </form>
                                 </td>
-                                <td>
-                                    <form action="/showOrDeleteInstances" method="post">
-                                        <button type="submit">Show my current collection</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            <hr>
-            <% } %> 
-            <% }else{%>
-                <div class="center">
-                    <h2 class="display-5">
-                        <%= waterNameInReview %>
-                    </h2>
 
-                    <p class="lead">
-                        <%= waterTypeInReview %>
-                    </p>
-                    <img src="<%=waterImgInReview%> " alt="picture">
-                </div>
-                <br>
-                <hr>
-                <% } %>
-
-                    <%for (let index=0; index < iterationNumber; index++) {%>
-                        <div class="mainDiv">
-                            <div>
-                                <% if(usageMode==='revievView' ){ %>
-
-                                    <p class="lead">
-                                        Submited by: <%= allWaterInstancesM[index].grader %>
-                                    </p>
-                                    <% } %>
-                                        <h2 class="display-5">
-                                            <%= allWaterInstancesM[index].name %>
-                                        </h2>
-                                        <p class="lead">
-                                            <%= allWaterInstancesM[index].type %>
-                                        </p>
-                            </div>
-                            <table style=" margin-left: auto;  margin-right: auto;">
-                                <% if(usageMode !=='revievView' ){ %>
+                                <%if(allWaterInstancesM[index].onMainPage===true){%>
                                     <td>
-                                        <img src="<%= allWaterInstancesM[index].imgUrl %>">
+                                        <form action="takeInstanceFromMainPage" method="post">
+                                            <button type="submit" name="instance_id"
+                                                value="<%=allWaterInstancesM[index]._id%>">Unpost it</button>
+                                        </form>
                                     </td>
-                                    <% } %>
-                                        <td>
-                                            <table>
-                                                <tr>
-                                                    <td>Initial taste</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.IT; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.IT;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Taste after 8h</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.TA8H; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.TA8H;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bottle quality</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.BQ; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.BQ;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bottle design</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.BD; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.BD;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mineral content</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.MC; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.MC;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Price</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.P; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.P;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Availability</td>
-                                                    <td>
-                                                        <%for (let index1=0; index1 <
-                                                            allWaterInstancesM[index].rating.A; index1++) {%>
-                                                            ⚫
-                                                            <%}%>
-                                                                <%for (let index2=allWaterInstancesM[index].rating.A;
-                                                                    index2 < 5; index2++) {%>
-                                                                    ⚪
-                                                                    <%}%>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                            </table>
-
-                            <% if(usageMode !=='revievView' ){ %>
-
-                                <table class="mainDiv">
-                                    <tr>
-                                        <td>
-                                            <form action="showOrDeleteInstances" method="post">
-                                                <button type="submit" name="instance_id"
-                                                    value="<%=allWaterInstancesM[index]._id%>">Delete</button>
-                                            </form>
-                                        </td>
+                                    <%}else{%>
                                         <td>
                                             <form action="putInstanceOnMainPage" method="post">
                                                 <button type="submit" name="instance_id"
                                                     value="<%=allWaterInstancesM[index]._id%>">Post it</button>
                                             </form>
                                         </td>
-                                    </tr>
-                                </table>
-                                <% }else{ %>
-                                    <div>
-                                        Their opinion:
-                                        <br>
-                                        <%=allWaterInstancesM[index].opinion%>
-                                    </div>
-                                    <%}%>
-                        </div>
-                        <%}%>
-    </main>
+                                        <%}%>
 
-    <%- include("message") -%>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <%}%>
+    </main>

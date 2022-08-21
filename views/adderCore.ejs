@@ -1,102 +1,81 @@
 <!-- To ma być formulaż pozwalający na dodawanie kolejnej pozycji jako woda o konkretnych parametrach -->
-<div class="adder">
-    <% if(usageMode==='adder' ){ %>
-        <form method="post" action="/addInstance">
+<div class="mainDiv">
+    <form method="post" action="/addInstance">
 
-            <div>
-                <input type="text" name="newWaterInstanceName" placeholder="Name" autocomplete="off">
-            </div>
-            <div>
-                <input type="text" name="newWaterInstanceType" placeholder="Type" autocomplete="off">
-            </div>
+        <div>
+            <input type="text" name="newWaterInstanceName" placeholder="Name" autocomplete="off">
+        </div>
+        <div>
+            <input type="text" name="newWaterInstanceType" placeholder="Type" autocomplete="off">
+        </div>
 
-            <% }else{ %>
-                <form method="post" action="/addReview">
-                    <div>
-                        <h2 class="display-5">
-                            <%= defaultNameValue %>
-                        </h2>
-                        <p class="lead">
-                            <%= defaultTypeValue %>
-                        </p>
-                    </div>
-                    <% } %>
-                        <div>
-                            <!-- zdj -->
-                            <table>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <img src="<%= defaultImgValue %>" >
-                                            </td>
-                                        </tr>
-                                        <% if(usageMode==='adder' ){ %>
-                                            <tr>
-                                                <td>
-                                                    <input type="url" name="imgUrl" placeholder="Url of the graphic">
-                                                </td>
-                                            </tr>
-                                            <% } %>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>Initial taste</td>
-                                            <td>
-                                                <input type="range" name="IT" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Taste after 8h</td>
-                                            <td>
-                                                <input type="range" name="TA8H" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bottle quality</td>
-                                            <td>
-                                                <input type="range" name="BQ" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bottle design</td>
-                                            <td>
-                                                <input type="range" name="BD" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mineral content</td>
-                                            <td>
-                                                <input type="range" name="MC" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Price</td>
-                                            <td>
-                                                <input type="range" name="P" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Availability</td>
-                                            <td>
-                                                <input type="range" name="A" min="0" max="5" value="0">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </table>
-                        </div>
-
-                        <% if(usageMode==='adder' ){ %>
-                            <button type="submit">Add</button>
-                            <% }else{ %>
-                                <br>
-                                <p>Say something about it, rate it:</p>
-                                <input type="text" name="writtenOpinion" size="50" autocomplete="off">
-                                <br><br>
-                                <button type="submit" name="_id" value="<%=instance_id %>">Submit review </button>
-                                <%} %>
-                </form>
+        <div>
+            <!-- zdj -->
+            <table>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="..\images\Puste.png">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="url" name="imgUrl" placeholder="Url of the graphic">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Initial taste</td>
+                            <td>
+                                <input type="range" name="IT" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Taste after 8h</td>
+                            <td>
+                                <input type="range" name="TA8H" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bottle quality</td>
+                            <td>
+                                <input type="range" name="BQ" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bottle design</td>
+                            <td>
+                                <input type="range" name="BD" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mineral content</td>
+                            <td>
+                                <input type="range" name="MC" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>
+                                <input type="range" name="P" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Availability</td>
+                            <td>
+                                <input type="range" name="A" min="0" max="5" value="0">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </table>
+        </div>
+        <div class="mainDiv">
+        <button type="submit">Add</button>
+        </div>
+    </form>
 </div>
